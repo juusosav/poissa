@@ -1,10 +1,18 @@
 using PoissaHR.Components;
+using PoissaHR.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+
+var projectRoot = builder.Environment.ContentRootPath;
+var dbPath = Path.Combine(projectRoot, "poissahr.db");
+
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlite($"Data Source={dbPath}"));
 
 var app = builder.Build();
 
