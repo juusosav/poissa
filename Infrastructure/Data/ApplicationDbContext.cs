@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PoissaHR.Domain.Entities;
+using PoissaHR.Infrastructure.Data.Configs.Entities;
 using PoissaHR.Infrastructure.Data.Configs.Enums;
 
 namespace PoissaHR.Infrastructure.Data
@@ -20,6 +21,12 @@ namespace PoissaHR.Infrastructure.Data
         {
             AbsenceEnum.Configure(modelBuilder);
             EmploymentEnum.Configure(modelBuilder);
+
+            AbsenceEntity.Configure(modelBuilder);
+            CompanyEntity.Configure(modelBuilder);
+            DepartmentEntity.Configure(modelBuilder);
+            EmployeeEntity.Configure(modelBuilder);
+            EmploymentEntity.Configure(modelBuilder);
         }
     }
 }

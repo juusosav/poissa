@@ -7,7 +7,11 @@ namespace PoissaHR.Infrastructure.Data.Configs.Entities
     {
         public static void Configure(ModelBuilder modelBuilder)
         {
-
+            modelBuilder.Entity<Employee>()
+                .HasMany(e => e.Employments)
+                .WithOne(e => e.Employee)
+                .HasForeignKey(e => e.EmployeeId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }
