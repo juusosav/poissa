@@ -1,6 +1,7 @@
 using PoissaHR.Components;
 using PoissaHR.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
+using MudBlazor.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +14,8 @@ var dbPath = Path.Combine(projectRoot, "poissahr.db");
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite($"Data Source={dbPath}"));
+
+builder.Services.AddMudServices();
 
 var app = builder.Build();
 
