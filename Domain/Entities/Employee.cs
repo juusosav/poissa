@@ -11,6 +11,8 @@
         public ICollection<Absence> ApprovedAbsences { get; set; } = [];
         public Guid CompanyId { get; set; }
         public Company Company { get; set; } = default!;
+        public Guid DepartmentId { get; set; }
+        public Department Department { get; set; } = default!;
         public DateTime BirthDate { get; set; }
         public DateTime CreatedAt { get; set; }
         public bool IsDeleted { get; set; } = false;

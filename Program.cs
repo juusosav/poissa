@@ -2,6 +2,7 @@ using PoissaHR.Components;
 using PoissaHR.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using MudBlazor.Services;
+using PoissaHR.Infrastructure.Data.Seeds;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +19,12 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddMudServices();
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    await DbSeeder.SeedAsync(dbContext);
+}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

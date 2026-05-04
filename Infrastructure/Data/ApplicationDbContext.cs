@@ -19,9 +19,11 @@ namespace PoissaHR.Infrastructure.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            //Enums
             AbsenceEnum.Configure(modelBuilder);
             EmploymentEnum.Configure(modelBuilder);
 
+            //Entities
             AbsenceEntity.Configure(modelBuilder);
             CompanyEntity.Configure(modelBuilder);
             DepartmentEntity.Configure(modelBuilder);

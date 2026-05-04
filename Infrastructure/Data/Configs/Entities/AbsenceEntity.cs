@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PoissaHR.Domain.Entities;
+using PoissaHR.Domain.Enums;
 
 namespace PoissaHR.Infrastructure.Data.Configs.Entities
 {
