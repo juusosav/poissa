@@ -17,6 +17,7 @@ namespace PoissaHR.Application.Services.EmployeeService
         {
             var employees = await _context.Employees
                 .Where(e => !e.IsDeleted)
+                .Include(e => e.Department)
                 .AsNoTracking()
                 .ToListAsync();
 

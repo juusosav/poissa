@@ -16,12 +16,7 @@
         }
         else
         {
-            @foreach (var employee in employees)
-            {
-                <EmployeeListCard Employees="employees"
-                                  FirstName="@employee.FirstName"
-                                  LastName="@employee.LastName" />
-            }
+            <EmployeeListCard Employees="employees" />
         }
     </MudContainer>
 </MudPaper>

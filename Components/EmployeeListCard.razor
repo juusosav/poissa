@@ -5,22 +5,18 @@
 
 <MudTable Items="@Employees" Hover="true" Bordered="true" Striped="true">
     <HeaderContent>
-        <MudTh>First Name</MudTh>
-        <MudTh>Last Name</MudTh>
+        <MudTh>Etunimi</MudTh>
+        <MudTh>Sukunimi</MudTh>
+        <MudTh>Osasto</MudTh>
     </HeaderContent>
-    <RowTemplate>
-        <MudTd>@FirstName</MudTd>
-        <MudTd>@LastName</MudTd>
+    <RowTemplate Context="employee">
+        <MudTd>@employee.FirstName</MudTd>
+        <MudTd>@employee.LastName</MudTd>
+        <MudTd>@employee.Department.Name</MudTd>
     </RowTemplate>
 </MudTable>
 
 @code {
     [Parameter]
     public List<Employee> Employees { get; set; } = new();
-
-    [Parameter]
-    public string FirstName { get; set; } = "";
-
-    [Parameter]
-    public string LastName { get; set; } = "";
 }
