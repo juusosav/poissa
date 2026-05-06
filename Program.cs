@@ -3,6 +3,7 @@ using PoissaHR.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using MudBlazor.Services;
 using PoissaHR.Infrastructure.Data.Seeds;
+using PoissaHR.Application.Services.EmployeeService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +18,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite($"Data Source={dbPath}"));
 
 builder.Services.AddMudServices();
+
+builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 
 var app = builder.Build();
 

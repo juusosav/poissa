@@ -1,0 +1,38 @@
+﻿@using PoissaHR.Application.Services.EmployeeService
+@using PoissaHR.Domain.Entities
+
+@inject IEmployeeService EmployeeService
+
+@page "/employees"
+
+<PageTitle>Employee List</PageTitle>
+
+<MudPaper>
+    <MudContainer>
+        <MudText Typo="Typo.h4" GutterBottom="true">Työntekijät</MudText>
+        @if (employees == null || !employees.Any())
+        {
+            <p>Ladataan työntekijälistaa...</p>
+        }
+        else
+        {
+            @foreach (var employee in employees)
+            {
+                <EmployeeListCard Employees="employees"
+                                  FirstName="@employee.FirstName"
+                                  LastName="@employee.LastName" />
+            }
+        }
+    </MudContainer>
+</MudPaper>
+
+
+@code {
+    private List<Employee> employees = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var employeeList = await EmployeeService.GetAllEmployeesAsync();
+        employees = employeeList.ToList();
+    }
+}

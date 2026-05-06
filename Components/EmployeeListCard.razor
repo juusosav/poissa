@@ -1,0 +1,26 @@
+﻿@using PoissaHR.Domain.Entities
+@using PoissaHR.Application.Services.EmployeeService
+
+@inject IEmployeeService EmployeeService
+
+<MudTable Items="@Employees" Hover="true" Bordered="true" Striped="true">
+    <HeaderContent>
+        <MudTh>First Name</MudTh>
+        <MudTh>Last Name</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd>@FirstName</MudTd>
+        <MudTd>@LastName</MudTd>
+    </RowTemplate>
+</MudTable>
+
+@code {
+    [Parameter]
+    public List<Employee> Employees { get; set; } = new();
+
+    [Parameter]
+    public string FirstName { get; set; } = "";
+
+    [Parameter]
+    public string LastName { get; set; } = "";
+}
