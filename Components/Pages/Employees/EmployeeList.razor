@@ -1,5 +1,6 @@
 ﻿@using PoissaHR.Application.Services.EmployeeService
 @using PoissaHR.Domain.Entities
+@using PoissaHR.Shared.Dto
 
 @inject IEmployeeService EmployeeService
 
@@ -23,7 +24,7 @@
 
 
 @code {
-    private List<Employee> employees = new();
+    private List<EmployeeDto> employees = new();
 
     protected override async Task OnInitializedAsync()
     {

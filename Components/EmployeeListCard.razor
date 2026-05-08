@@ -1,5 +1,6 @@
 ﻿@using PoissaHR.Domain.Entities
 @using PoissaHR.Application.Services.EmployeeService
+@using PoissaHR.Shared.Dto
 
 @inject IEmployeeService EmployeeService
 
@@ -18,5 +19,5 @@
 
 @code {
     [Parameter]
-    public List<Employee> Employees { get; set; } = new();
+    public List<EmployeeDto> Employees { get; set; } = new();
 }
