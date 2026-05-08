@@ -3,6 +3,7 @@
 @using PoissaHR.Shared.Dto
 
 @inject IEmployeeService EmployeeService
+@inject NavigationManager Navigation
 
 <MudTable Items="@Employees" Hover="true" Bordered="true" Striped="true">
     <HeaderContent>
@@ -10,14 +11,21 @@
         <MudTh>Sukunimi</MudTh>
         <MudTh>Osasto</MudTh>
     </HeaderContent>
+
     <RowTemplate Context="employee">
         <MudTd>@employee.FirstName</MudTd>
         <MudTd>@employee.LastName</MudTd>
-        <MudTd>@employee.Department.Name</MudTd>
+        <MudTd>@employee.DepartmentName</MudTd>
+
+        <MudTd>
+            <MudIconButton Icon="@Icons.Material.Filled.Visibility" OnClick="@(() => GoToDetails(employee.Id))" />
+        </MudTd>
     </RowTemplate>
 </MudTable>
 
 @code {
     [Parameter]
     public List<EmployeeDto> Employees { get; set; } = new();
+
+    private void GoToDetails(Guid employeeId) => Navigation.NavigateTo($"/employees/{employeeId}");
 }

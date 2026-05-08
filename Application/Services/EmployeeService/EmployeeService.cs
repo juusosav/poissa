@@ -26,18 +26,42 @@ namespace PoissaHR.Application.Services.EmployeeService
                     LastName = e.LastName,
                     Email = e.Email,
                     Phone = e.Phone,
-                    CompanyId = e.CompanyId,
-                    DepartmentId = e.DepartmentId,
-                    BirthDate = e.BirthDate,
-                    CreatedAt = e.CreatedAt,
-                    IsDeleted = e.IsDeleted,
-                    DeletedAt = e.DeletedAt,
-                    Department = e.Department
+                    DepartmentName = e.Department != null
+                        ? e.Department.Name
+                        : null
                 })
                 .AsNoTracking()
                 .ToListAsync();
 
             return employees;
+        }
+
+        public async Task<EmployeeDto?> GetEmployeeByIdAsync(Guid id)
+        {
+            var employee = await _context.Employees
+                .Where(e => e.Id == id && !e.IsDeleted)
+                .Include(e => e.Department)
+                .Include(e => e.Employments)
+                .Select(e => new EmployeeDto
+                {
+                    Id = e.Id,
+                    FirstName = e.FirstName,
+                    LastName = e.LastName,
+                    Email = e.Email,
+                    Phone = e.Phone,
+
+                    DepartmentName = e.Department != null
+                        ? e.Department.Name
+                        : null,
+                    CurrentJobTitle = e.Employments
+                        .OrderByDescending(e => e.StartDate)
+                        .Select(e => e.JobTitle)
+                        .FirstOrDefault()
+                })
+                .AsNoTracking()
+                .FirstOrDefaultAsync();
+
+            return employee;
         }
     }
 }

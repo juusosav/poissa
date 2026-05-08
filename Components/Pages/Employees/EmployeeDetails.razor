@@ -1,0 +1,58 @@
+﻿@using PoissaHR.Application.Services.EmployeeService
+@using PoissaHR.Domain.Entities
+@using PoissaHR.Shared.Dto
+
+@inject IEmployeeService EmployeeService
+
+@page "/employees/{Id:guid}"
+
+@if (employee == null)
+{
+    <p>Ladataan työntekijän tietoja...</p>
+}
+else
+{
+    <MudGrid Spacing="3">
+
+        <!-- Basic Info -->
+        <MudItem xs="12" md="4">
+            <MudPaper Class="pa-4">
+                <MudText Typo="Typo.h6">@employee.FirstName @employee.LastName</MudText>
+                <MudText>@employee.Email</MudText>
+                <MudText>@employee.Phone</MudText>
+            </MudPaper>
+        </MudItem>
+
+        <!-- Employment -->
+        <MudItem xs="12" md="8">
+            <MudPaper Class="pa-4">
+                <MudText Typo="Typo.h6">Työllistyminen</MudText>
+                <MudText>Osasto: @employee.DepartmentName</MudText>
+                <MudText>Rooli: @employee.CurrentJobTitle</MudText>
+            </MudPaper>
+        </MudItem>
+
+        <!-- Tabs -->
+        <MudItem xs="12">
+            <MudTabs>
+
+                <MudTabPanel Text="Documents">
+                    <MudButton>Upload</MudButton>
+                </MudTabPanel>
+
+            </MudTabs>
+        </MudItem>
+
+    </MudGrid>
+}
+@code {
+    [Parameter]
+    public Guid Id { get; set; }
+
+    private EmployeeDto? employee;
+
+    protected override async Task OnInitializedAsync()
+    {
+        employee = await EmployeeService.GetEmployeeByIdAsync(Id);
+    }
+}

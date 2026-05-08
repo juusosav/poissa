@@ -32,6 +32,7 @@ namespace PoissaHR.Infrastructure.Data.Seeds
                     Id = Guid.NewGuid(),
                     EmployeeId = employee.Id,
                     DepartmentId = department.Id,
+                    JobTitle = "Asiakaspalvelija",
                     StartDate = DateTime.UtcNow.AddYears(-1),
                     EndDate = null
                 };
