@@ -8,18 +8,16 @@
 
 <PageTitle>Employee List</PageTitle>
 
-<MudPaper>
-    <MudContainer>
-        <MudText Typo="Typo.h4" GutterBottom="true">Työntekijät</MudText>
-        @if (employees == null || !employees.Any())
-        {
-            <p>Ladataan työntekijälistaa...</p>
-        }
-        else
-        {
-            <EmployeeListCard Employees="employees" />
-        }
-    </MudContainer>
+<MudPaper Class="pa-4">
+    <MudText Typo="Typo.h5" GutterBottom="true">Työntekijät</MudText>
+    @if (employees == null || !employees.Any())
+    {
+        <p>Ladataan työntekijälistaa...</p>
+    }
+    else
+    {
+        <EmployeeListCard Employees="employees" />
+    }
 </MudPaper>
 
 

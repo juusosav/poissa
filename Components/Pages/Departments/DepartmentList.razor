@@ -6,27 +6,33 @@
 
 @page "/departments"
 
-<MudPaper Class="pa-4">
+@if (departments == null || !departments.Any())
+{
+    <p>Ladataan osastolistaa...</p>
+}
+else
+{
+    <MudPaper Class="pa-4">
 
-    <MudStack Row="true" Justify="Justify.SpaceBetween">
-        <MudText Typo="Typo.h5">Osastot</MudText>
-        <MudButton Variant="Variant.Filled">+ Lisää</MudButton>
-    </MudStack>
+        <MudStack Row="true" Justify="Justify.SpaceBetween">
+            <MudText Typo="Typo.h5">Osastot</MudText>
+            <MudButton Variant="Variant.Filled">+ Lisää</MudButton>
+        </MudStack>
 
-    <MudTable Items="@departments">
+        <MudTable Items="@departments">
 
-        <HeaderContent>
-            <MudTh>Nimi</MudTh>
-        </HeaderContent>
+            <HeaderContent>
+                <MudTh>Nimi</MudTh>
+            </HeaderContent>
 
-        <RowTemplate Context="d">
-            <MudTd>@d.Name</MudTd>
-        </RowTemplate>
+            <RowTemplate Context="d">
+                <MudTd>@d.Name</MudTd>
+            </RowTemplate>
 
-    </MudTable>
+        </MudTable>
 
-</MudPaper>
-
+    </MudPaper>
+}
 @code {
     private List<DepartmentDto> departments = new();
 
