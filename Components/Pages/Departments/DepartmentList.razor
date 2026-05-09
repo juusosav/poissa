@@ -1,7 +1,38 @@
-﻿@using PoissaHR.Domain.Entities
+﻿@using PoissaHR.Application.Services.DepartmentService
+@using PoissaHR.Domain.Entities
 @using PoissaHR.Shared.Dto
 
+@inject IDepartmentService DepartmentService
+
+@page "/departments"
+
+<MudPaper Class="pa-4">
+
+    <MudStack Row="true" Justify="Justify.SpaceBetween">
+        <MudText Typo="Typo.h5">Osastot</MudText>
+        <MudButton Variant="Variant.Filled">+ Lisää</MudButton>
+    </MudStack>
+
+    <MudTable Items="@departments">
+
+        <HeaderContent>
+            <MudTh>Nimi</MudTh>
+        </HeaderContent>
+
+        <RowTemplate Context="d">
+            <MudTd>@d.Name</MudTd>
+        </RowTemplate>
+
+    </MudTable>
+
+</MudPaper>
 
 @code {
+    private List<DepartmentDto> departments = new();
 
+    protected override async Task OnInitializedAsync()
+    {
+        var departmentList = await DepartmentService.GetAllDepartmentsAsync();
+        departments = departmentList.ToList();
+    }
 }

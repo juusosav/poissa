@@ -21,7 +21,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Components\Pages\Departments\" />
     <Folder Include="wwwroot\images\" />
   </ItemGroup>
 
