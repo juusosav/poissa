@@ -47,9 +47,9 @@ namespace PoissaHR.Application.Services.EmployeeService
                     Id = e.Id,
                     FirstName = e.FirstName,
                     LastName = e.LastName,
+                    Portrait = e.Portrait,
                     Email = e.Email,
                     Phone = e.Phone,
-
                     DepartmentName = e.Department != null
                         ? e.Department.Name
                         : null,
@@ -62,6 +62,25 @@ namespace PoissaHR.Application.Services.EmployeeService
                 .FirstOrDefaultAsync();
 
             return employee;
+        }
+
+        public async Task<bool> EditEmployee(Guid id, EmployeeDto dto)
+        {
+            var employee = await _context.Employees
+                .Where(e => e.Id == id && !e.IsDeleted)
+                .FirstOrDefaultAsync();
+
+            if (employee == null)
+                return false;
+
+            employee.FirstName = dto.FirstName;
+            employee.LastName = dto.LastName;
+            employee.Email = dto.Email ?? employee.Email;
+            employee.Phone = dto.Phone ?? employee.Phone;
+
+            _context.Employees.Update(employee);
+            await _context.SaveChangesAsync();
+            return true;
         }
     }
 }

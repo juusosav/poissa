@@ -1,0 +1,32 @@
+﻿@using PoissaHR.Application.Services.EmployeeService
+@using PoissaHR.Domain.Entities
+@using PoissaHR.Shared.Dto
+
+@inject IEmployeeService EmployeeService
+@inject NavigationManager Navigation
+
+@page "/employees/{Id:guid}/edit"
+
+<MudForm>
+
+</MudForm>
+
+
+@code {
+    [Parameter]
+    public Guid Id { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var employee = await EmployeeService.GetEmployeeByIdAsync(Id);
+
+        if (employee == null)
+        {
+            Navigation.NavigateTo("/employees");
+        }
+        else
+        {
+            // TODO: Initialize form fields with employee data
+        }
+    }
+}

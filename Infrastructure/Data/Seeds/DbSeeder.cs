@@ -24,6 +24,7 @@ namespace PoissaHR.Infrastructure.Data.Seeds
                     Id = Guid.NewGuid(),
                     FirstName = "Matti",
                     LastName = "Meikäläinen",
+                    Portrait = "/images/placeholder_portrait.jpg",
                     CompanyId = company.Id,
                     DepartmentId = department.Id
                 };

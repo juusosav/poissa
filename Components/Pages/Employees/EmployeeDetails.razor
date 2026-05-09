@@ -3,6 +3,7 @@
 @using PoissaHR.Shared.Dto
 
 @inject IEmployeeService EmployeeService
+@inject NavigationManager Navigation
 
 @page "/employees/{Id:guid}"
 
@@ -20,6 +21,9 @@ else
                 <MudText Typo="Typo.h6">@employee.FirstName @employee.LastName</MudText>
                 <MudText>@employee.Email</MudText>
                 <MudText>@employee.Phone</MudText>
+                <MudAvatar Size="Size.Large" Class="mt-2">
+                    <MudImage Src="@employee.Portrait" Alt="Profiilikuva" />
+                </MudAvatar>
             </MudPaper>
         </MudItem>
 
@@ -27,6 +31,7 @@ else
         <MudItem xs="12" md="8">
             <MudPaper Class="pa-4">
                 <MudText Typo="Typo.h6">Työllistyminen</MudText>
+                <br />
                 <MudText>Osasto: @employee.DepartmentName</MudText>
                 <MudText>Rooli: @employee.CurrentJobTitle</MudText>
             </MudPaper>
@@ -35,12 +40,14 @@ else
         <!-- Tabs -->
         <MudItem xs="12">
             <MudTabs>
-
                 <MudTabPanel Text="Documents">
                     <MudButton>Upload</MudButton>
                 </MudTabPanel>
-
             </MudTabs>
+        </MudItem>
+
+        <MudItem xs="12">
+            <MudIconButton Icon="@Icons.Material.Filled.Edit" OnClick="@(() => Navigation.NavigateTo($"/employees/{employee.Id}/edit"))" />
         </MudItem>
 
     </MudGrid>
