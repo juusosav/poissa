@@ -42,6 +42,7 @@ namespace PoissaHR.Application.Services.EmployeeService
                 .Where(e => e.Id == id && !e.IsDeleted)
                 .Include(e => e.Department)
                 .Include(e => e.Employments)
+                    .ThenInclude(emp => emp.Absences)
                 .Select(e => new EmployeeDto
                 {
                     Id = e.Id,
@@ -56,7 +57,19 @@ namespace PoissaHR.Application.Services.EmployeeService
                     CurrentJobTitle = e.Employments
                         .OrderByDescending(e => e.StartDate)
                         .Select(e => e.JobTitle)
-                        .FirstOrDefault()
+                        .FirstOrDefault(),
+                    Absences = e.Employments
+                        .SelectMany(e => e.Absences)
+                        .Select(a => new AbsenceDto
+                        {
+                            Id = a.Id,
+                            StartDate = a.StartDate,
+                            EndDate = a.EndDate,
+                            Type = a.Type.ToString(),
+                            Status = a.Status.ToString(),
+                            Notes = a.Notes
+                        })
+                        .ToList()
                 })
                 .AsNoTracking()
                 .FirstOrDefaultAsync();

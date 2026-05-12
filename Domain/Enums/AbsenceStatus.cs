@@ -2,9 +2,9 @@
 {
     public enum AbsenceStatus
     {
-        Pending,
-        Approved,
-        Rejected,
-        Cancelled
+        Odottaa,
+        Hyväksytty,
+        Hylätty,
+        Peruutettu
     }
 }

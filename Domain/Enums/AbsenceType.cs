@@ -2,13 +2,13 @@
 {
     public enum AbsenceType
     {
-        Vacation,
-        SickLeave,
-        PersonalLeave,
-        MaternityLeave,
-        PaternityLeave,
-        BereavementLeave,
-        UnpaidLeave,
-        Other
+        Loma,
+        Sairausloma,
+        HenkilökohtainenLoma,
+        Äitiysloma,
+        Isyysloma,
+        Suruloma,
+        PalkatonLoma,
+        Muu
     }
 }

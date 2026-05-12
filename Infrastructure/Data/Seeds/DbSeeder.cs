@@ -37,11 +37,25 @@ namespace PoissaHR.Infrastructure.Data.Seeds
                     StartDate = DateTime.UtcNow.AddYears(-1),
                     EndDate = null
                 };
+                var absence = new Absence
+                {
+                    Id = Guid.NewGuid(),
+                    EmploymentId = employment.Id,
+                    CompanyId = company.Id,
+                    StartDate = new DateTime(2026, 4, 5),
+                    EndDate = new DateTime(2026, 4, 10),
+                    Type = Domain.Enums.AbsenceType.Sairausloma,
+                    Status = Domain.Enums.AbsenceStatus.Hyväksytty,
+                    Notes = "Sairastui flunssaan"
+                };
+
+
 
                 context.Companies.Add(company);
                 context.Departments.Add(department);
                 context.Employees.Add(employee);
                 context.Employments.Add(employment);
+                context.Absences.Add(absence);
 
                 await context.SaveChangesAsync();
             }

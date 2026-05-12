@@ -2,10 +2,10 @@
 {
     public enum EmploymentStatus
     {
-        Active,
-        Inactive,
-        Terminated,
-        OnLeave,
-        Retired
+        Aktiivinen,
+        Eiaktiivinen,
+        Irtisanottu,
+        Lomalla,
+        Eläkkeellä
     }
 }

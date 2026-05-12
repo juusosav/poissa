@@ -2,10 +2,10 @@
 {
     public enum EmploymentType
     {
-        FullTime,
-        PartTime,
-        Contract,
-        Temporary,
-        Internship
+        Kokoaikainen,
+        OsaAikainen,
+        Sopimus,
+        Määräaikainen,
+        Harjoittelu
     }
 }

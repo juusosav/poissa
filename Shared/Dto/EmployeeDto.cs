@@ -12,5 +12,6 @@ namespace PoissaHR.Shared.Dto
         public string? Phone { get; set; } = "";
         public string? DepartmentName { get; set; }
         public string? CurrentJobTitle { get; set; }
+        public List<AbsenceDto>? Absences { get; set; } = [];
     }
 }

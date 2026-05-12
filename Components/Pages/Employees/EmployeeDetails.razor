@@ -39,8 +39,33 @@ else
 
         <!-- Tabs -->
         <MudItem xs="12">
+
             <MudTabs>
-                <MudTabPanel Text="Documents">
+                <MudTabPanel Text="Poissaolot">
+
+                    <MudTable Items="@employee.Absences"
+                              Hover="true"
+                              Bordered="true"
+                              Striped="true">
+
+                        <HeaderContent>
+                            <MudTh>Tyyppi</MudTh>
+                            <MudTh>Alkupäivä</MudTh>
+                            <MudTh>Loppupäivä</MudTh>
+                            <MudTh>Status</MudTh>
+                            <MudTh>Muistiinpanot</MudTh>
+                        </HeaderContent>
+
+                        <RowTemplate Context="absence">
+                            <MudTd>@absence.Type</MudTd>
+                            <MudTd>@absence.StartDate.ToShortDateString()</MudTd>
+                            <MudTd>@absence.EndDate.ToShortDateString()</MudTd>
+                            <MudTd>@absence.Status</MudTd>
+                            <MudTd>@absence.Notes</MudTd>
+                        </RowTemplate>
+                    </MudTable>
+                </MudTabPanel>
+                <MudTabPanel Text="Dokumentit">
                     <MudButton>Upload</MudButton>
                 </MudTabPanel>
             </MudTabs>
