@@ -1,3 +1,4 @@
 <Solution>
+  <Project Path="../PoissaHR.Tests/PoissaHR.Tests.csproj" Id="8caf5b55-e183-4608-bce0-157ac0a411a0" />
   <Project Path="PoissaHR.csproj" />
 </Solution>
