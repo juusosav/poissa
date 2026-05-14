@@ -1,5 +1,4 @@
 ﻿@using PoissaHR.Application.Services.EmployeeService
-@using PoissaHR.Domain.Entities
 @using PoissaHR.Shared.Dto
 
 @inject IEmployeeService EmployeeService
@@ -17,8 +16,9 @@ else
 
         <!-- Basic Info -->
         <MudItem xs="12" md="4">
-            <MudPaper Class="pa-4">
+            <MudPaper Class="pa-4" Style="min-height: 13rem;">
                 <MudText Typo="Typo.h6">@employee.FirstName @employee.LastName</MudText>
+                <br />
                 <MudText>@employee.Email</MudText>
                 <MudText>@employee.Phone</MudText>
                 <MudAvatar Size="Size.Large" Class="mt-2">
@@ -29,11 +29,13 @@ else
 
         <!-- Employment -->
         <MudItem xs="12" md="8">
-            <MudPaper Class="pa-4">
-                <MudText Typo="Typo.h6">Työllistyminen</MudText>
+            <MudPaper Class="pa-4" Style="min-height: 13rem;">
+                <MudText Typo="Typo.h6">Nykyinen työsuhde</MudText>
                 <br />
                 <MudText>Osasto: @employee.DepartmentName</MudText>
                 <MudText>Rooli: @employee.CurrentJobTitle</MudText>
+                <br />
+                <MudButton>Näytä kaikki</MudButton>
             </MudPaper>
         </MudItem>
 
@@ -66,13 +68,17 @@ else
                     </MudTable>
                 </MudTabPanel>
                 <MudTabPanel Text="Dokumentit">
-                    <MudButton>Upload</MudButton>
+                    <MudButton>Lataa</MudButton>
                 </MudTabPanel>
             </MudTabs>
         </MudItem>
 
         <MudItem xs="12">
-            <MudIconButton Icon="@Icons.Material.Filled.Edit" OnClick="@(() => Navigation.NavigateTo($"/employees/{employee.Id}/edit"))" />
+            <MudText Typo="Typo.h6" Class="d-flex align-center">
+                Muokkaa tietoja
+                <MudIconButton Icon="@Icons.Material.Filled.Edit"
+                               OnClick="@(() => Navigation.NavigateTo($"/employees/{employee.Id}/edit-info"))" />
+            </MudText>
         </MudItem>
 
     </MudGrid>

@@ -77,10 +77,28 @@ namespace PoissaHR.Application.Services.EmployeeService
             return employee;
         }
 
-        public async Task<bool> EditEmployee(Guid id, EmployeeDto dto)
+        public async Task<EmployeeEditDto?> GetEmployeeForEditAsync(Guid id)
         {
             var employee = await _context.Employees
                 .Where(e => e.Id == id && !e.IsDeleted)
+                .Select(e => new EmployeeEditDto
+                {
+                    Id = e.Id,
+                    FirstName = e.FirstName,
+                    LastName = e.LastName,
+                    Email = e.Email,
+                    Phone = e.Phone
+                })
+                .AsNoTracking()
+                .FirstOrDefaultAsync();
+
+            return employee;
+        }
+
+        public async Task<bool> UpdateEmployeeAsync(EmployeeEditDto dto)
+        {
+            var employee = await _context.Employees
+                .Where(e => e.Id == dto.Id && !e.IsDeleted)
                 .FirstOrDefaultAsync();
 
             if (employee == null)
@@ -91,7 +109,6 @@ namespace PoissaHR.Application.Services.EmployeeService
             employee.Email = dto.Email ?? employee.Email;
             employee.Phone = dto.Phone ?? employee.Phone;
 
-            _context.Employees.Update(employee);
             await _context.SaveChangesAsync();
             return true;
         }
