@@ -7,6 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="PoissaHR.Tests\**" />
+    <Content Remove="PoissaHR.Tests\**" />
+    <EmbeddedResource Remove="PoissaHR.Tests\**" />
+    <None Remove="PoissaHR.Tests\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.27" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.27">
       <PrivateAssets>all</PrivateAssets>
