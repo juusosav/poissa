@@ -31,5 +31,35 @@ namespace PoissaHR.Application.Services.DepartmentService
 
             return departments;
         }
+
+        public async Task<DepartmentDto?> GetDepartmentByIdAsync(Guid id)
+        {
+            var department = await _context.Departments
+                .Where(d => d.Id == id && !d.IsDeleted)
+                .Include(d => d.Company)
+                .Include(d => d.Employments)
+                .Select(d => new DepartmentDto
+                {
+                    Id = d.Id,
+                    Name = d.Name,
+                    CompanyName = d.Company != null
+                        ? d.Company.Name
+                        : null,
+                    CurrentEmployees = d.Employments.Select(e => new EmploymentDto
+                    {
+                        Id = e.Id,
+                        EmployeeName = e.Employee != null
+                            ? $"{e.Employee.FirstName} {e.Employee.LastName}"
+                            : null,
+                        JobTitle = e.JobTitle,
+                        Type = e.Type.ToString(),
+                        Status = e.Status.ToString()
+                    }).ToList()
+                })
+                .AsNoTracking()
+                .FirstOrDefaultAsync();
+
+            return department;
+        }
     }
 }

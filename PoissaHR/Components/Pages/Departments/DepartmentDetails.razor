@@ -1,0 +1,72 @@
+﻿@using PoissaHR.Application.Services.DepartmentService
+@using PoissaHR.Shared.Dto
+
+@inject IDepartmentService DepartmentService
+@inject NavigationManager Navigation
+
+@page "/departments/{Id:guid}"
+
+@if (department == null)
+{
+    <p>Ladataan osaston tietoja...</p>
+}
+else
+{
+    <MudGrid Spacing="3">
+
+        <!-- Basic Info -->
+        <MudItem xs="12" md="4">
+            <MudPaper Class="pa-4" Style="min-height: 13rem;">
+                <MudText Typo="Typo.h6">@department.Name</MudText>
+                <br />
+                <MudText>@department.CompanyName</MudText>
+            </MudPaper>
+        </MudItem>
+
+        <MudItem xs="12" md="8">
+            <MudPaper Class="pa-4" Style="min-height: 13rem;">
+                <MudText Typo="Typo.h6">Nykyiset työntekijät</MudText>
+                <br />
+                @if (department.CurrentEmployees.Any())
+                {
+                    <ul>
+                        @foreach (var employee in department.CurrentEmployees)
+                        {
+                            <li>
+                                @employee.EmployeeName -
+                                @employee.JobTitle (@employee.Type) - @employee.Status
+                            </li>
+                        }
+                    </ul>
+                }
+                else
+                {
+                    <p>Ei nykyisiä työntekijöitä.</p>
+                }
+            </MudPaper>
+        </MudItem>
+
+        <!-- Edit Info -->
+
+        <MudItem xs="12">
+            <MudText Typo="Typo.h6" Class="d-flex align-center">
+                Muokkaa tietoja
+                <MudIconButton Icon="@Icons.Material.Filled.Edit"
+                               OnClick="@(() => Navigation.NavigateTo($"/departments/{department.Id}/edit"))" />
+            </MudText>
+        </MudItem>
+
+    </MudGrid>
+
+@code {
+    [Parameter]
+    public Guid Id { get; set; }
+
+    private DepartmentDto? department;
+
+    protected override async Task OnInitializedAsync()
+    {
+        department = await DepartmentService.GetDepartmentByIdAsync(Id);
+    }
+}
+}

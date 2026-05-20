@@ -2,6 +2,7 @@
 @using PoissaHR.Shared.Dto
 
 @inject IDepartmentService DepartmentService
+@inject NavigationManager Navigation
 
 @page "/departments"
 
@@ -19,15 +20,16 @@ else
         </MudStack>
 
         <MudTable Items="@departments">
-
             <HeaderContent>
                 <MudTh>Nimi</MudTh>
             </HeaderContent>
 
             <RowTemplate Context="d">
                 <MudTd>@d.Name</MudTd>
+                <MudTd>
+                    <MudIconButton Icon="@Icons.Material.Filled.Visibility" OnClick="@(() => GoToDetails(@d.Id))" />
+                </MudTd>
             </RowTemplate>
-
         </MudTable>
 
     </MudPaper>
@@ -40,4 +42,6 @@ else
         var departmentList = await DepartmentService.GetAllDepartmentsAsync();
         departments = departmentList.ToList();
     }
+
+    private void GoToDetails(Guid departmentId) => Navigation.NavigateTo($"/departments/{departmentId}");
 }

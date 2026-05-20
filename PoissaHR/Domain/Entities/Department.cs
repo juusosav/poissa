@@ -7,7 +7,6 @@
         public Company Company { get; set; } = default!;
         public string Name { get; set; } = "";
         public ICollection<Employment> Employments { get; set; } = [];
-
         public bool IsDeleted { get; set; }
     }
 }

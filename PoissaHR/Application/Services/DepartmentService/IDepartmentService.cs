@@ -8,5 +8,7 @@ namespace PoissaHR.Application.Services.DepartmentService
     public interface IDepartmentService
     {
         Task<IEnumerable<DepartmentDto>> GetAllDepartmentsAsync();
+
+        Task<DepartmentDto?> GetDepartmentByIdAsync(Guid id);
     }
 }
