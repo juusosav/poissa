@@ -51,11 +51,12 @@ namespace PoissaHR.Tests.Services
                 EmployeeId = employee.Id,
                 DepartmentId = department.Id,
                 StartDate = DateTime.UtcNow.AddMonths(-1),
-
+                
             };
 
             _context.Companies.Add(company);
             _context.Departments.Add(department);
+            _context.Employees.Add(employee);
             _context.Employments.Add(employment);
 
             await _context.SaveChangesAsync(TestContext.Current.CancellationToken);
@@ -68,6 +69,7 @@ namespace PoissaHR.Tests.Services
             Assert.Equal(department.Id, result!.Id);
             Assert.Equal(department.Name, result.Name);
             Assert.Equal(company.Name, result.CompanyName);
+            Assert.Equal(employee.FirstName + " " + employee.LastName, result.CurrentEmployees.First().EmployeeName);
         }
     }
 }
