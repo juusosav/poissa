@@ -71,5 +71,71 @@ namespace PoissaHR.Tests.Services
             Assert.Equal(company.Name, result.CompanyName);
             Assert.Equal(employee.FirstName + " " + employee.LastName, result.CurrentEmployees.First().EmployeeName);
         }
+
+        [Fact]
+        public async Task GetDepartmentForEditAsync_ReturnsDepartmentForEdit_WhenDepartmentExists()
+        {
+            // Arrange
+            var company = new Company
+            {
+                Id = Guid.NewGuid(),
+                Name = "Test Company"
+            };
+            var department = new Department
+            {
+                Id = Guid.NewGuid(),
+                Name = "IT",
+                CompanyId = company.Id
+            };
+
+            _context.Companies.Add(company);
+            _context.Departments.Add(department);
+
+            await _context.SaveChangesAsync(TestContext.Current.CancellationToken);
+
+            // Act
+            var result = await _sut.GetDepartmentForEditAsync(department.Id);
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(department.Id, result.Id);
+            Assert.Equal(department.Name, result.Name);
+        }
+
+        [Fact]
+        public async Task UpdateDepartmentAsync_ReturnsTrue_WhenUpdateIsSuccessful()
+        {
+            // Arrange
+            var company = new Company
+            {
+                Id = Guid.NewGuid(),
+                Name = "Test Company"
+            };
+            var department = new Department
+            {
+                Id = Guid.NewGuid(),
+                Name = "IT",
+                CompanyId = company.Id
+            };
+
+            _context.Companies.Add(company);
+            _context.Departments.Add(department);
+            await _context.SaveChangesAsync(TestContext.Current.CancellationToken);
+
+            var editDto = new DepartmentEditDto
+            {
+                Id = department.Id,
+                Name = "Updated IT"
+            };
+            // Act
+            var result = await _sut.UpdateDepartmentAsync(editDto);
+
+            // Assert
+            Assert.True(result);
+            var updatedDepartment = await _context.Departments.FindAsync([department.Id], TestContext.Current.CancellationToken);
+            Assert.NotNull(updatedDepartment);
+            Assert.Equal(editDto.Name, updatedDepartment?.Name);
+
+        }
     }
 }

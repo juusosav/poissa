@@ -2,6 +2,7 @@
 @using PoissaHR.Shared.Dto
 
 @inject IEmployeeService EmployeeService
+@inject ISnackbar Snackbar
 @inject NavigationManager Navigation
 
 @page "/employees/{Id:guid}/edit-info"
@@ -83,11 +84,10 @@
 
         await EmployeeService.UpdateEmployeeAsync(model);
 
+        Snackbar.Add("Työntekijän tiedot päivitetty onnistuneesti", Severity.Success);
+
         Navigation.NavigateTo($"/employees/{model.Id}");
     }
 
-    private void Cancel()
-    {
-        Navigation.NavigateTo($"/employees/{Id}");
-    }
+    private void Cancel() => Navigation.NavigateTo($"/employees/{Id}");
 }

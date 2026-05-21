@@ -10,7 +10,6 @@ namespace PoissaHR.Application.Services.EmployeeService
         Task<IEnumerable<EmployeeDto>> GetAllEmployeesAsync();
         Task<EmployeeDto?> GetEmployeeByIdAsync(Guid id);
         Task<bool> UpdateEmployeeAsync(EmployeeEditDto dto);
-
         Task<EmployeeEditDto?> GetEmployeeForEditAsync(Guid id);
     }
 }

@@ -1,0 +1,74 @@
+﻿@using PoissaHR.Application.Services.DepartmentService
+@using PoissaHR.Shared.Dto
+
+@inject IDepartmentService DepartmentService
+@inject ISnackbar Snackbar
+@inject NavigationManager Navigation
+
+@page "/departments/{Id:guid}/edit-info"
+
+<MudPaper Class="pa-4">
+    <MudText Typo="Typo.h5" GutterBottom="true">
+        Muokkaa osaston tietoja
+    </MudText>
+
+    <MudForm @ref="_form">
+        <MudGrid>
+            <MudItem xs="12" md="6">
+                <MudTextField Label="Nimi"
+                              @bind-Value="model.Name"
+                              Required="true" />
+            </MudItem>
+        </MudGrid>
+
+        <MudStack Row="true" Spacing="2" Class="mt-4">
+            <MudButton Variant="Variant.Filled"
+                       Color="Color.Primary"
+                       OnClick="Save">
+                Tallenna
+            </MudButton>
+
+            <MudButton Variant="Variant.Outlined"
+                       OnClick="Cancel">
+                Peruuta
+            </MudButton>
+        </MudStack>
+    </MudForm>
+</MudPaper>
+
+
+@code {
+    [Parameter]
+    public Guid Id { get; set; }
+
+    private DepartmentEditDto model = new();
+    private MudForm? _form;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var department = await DepartmentService.GetDepartmentForEditAsync(Id);
+        if (department != null)
+        {
+            model = department;
+        }
+    }
+
+    private async Task Save()
+    {
+        if (_form == null)
+            return;
+
+        await _form.Validate();
+
+        if (!_form.IsValid)
+            return;
+
+        await DepartmentService.UpdateDepartmentAsync(model);
+
+        Snackbar.Add("Osaston tiedot päivitetty onnistuneesti", Severity.Success);
+
+        Navigation.NavigateTo($"/departments/{Id}");
+    }
+
+    private void Cancel() => Navigation.NavigateTo($"/departments/{Id}");
+}

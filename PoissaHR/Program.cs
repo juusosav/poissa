@@ -26,6 +26,13 @@ builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 builder.Services.AddScoped<IAbsenceService, AbsenceService>();
 builder.Services.AddScoped<IDepartmentService, DepartmentService>();
 
+builder.Services.AddMudBlazorSnackbar(config =>
+{
+    config.VisibleStateDuration = 3000;
+    config.HideTransitionDuration = 500;
+    config.ShowTransitionDuration = 500;
+});
+
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())

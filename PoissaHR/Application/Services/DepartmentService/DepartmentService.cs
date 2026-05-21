@@ -63,5 +63,36 @@ namespace PoissaHR.Application.Services.DepartmentService
 
             return department;
         }
+
+        public async Task<DepartmentEditDto?> GetDepartmentForEditAsync(Guid id)
+        {
+            var department = await _context.Departments
+                .Where(d => d.Id == id && !d.IsDeleted)
+                .Select(d => new DepartmentEditDto
+                {
+                    Id = d.Id,
+                    Name = d.Name
+                })
+                .AsNoTracking()
+                .FirstOrDefaultAsync();
+
+            return department;
+        }
+
+        public async Task<bool> UpdateDepartmentAsync(DepartmentEditDto dto)
+        {
+            var department = await _context.Departments
+                .Where(d => d.Id == dto.Id && !d.IsDeleted)
+                .FirstOrDefaultAsync();
+
+            if (department == null)
+                return false;
+
+            department.Name = dto.Name;
+
+            _context.Departments.Update(department);
+            await _context.SaveChangesAsync();
+            return true;
+        }
     }
 }
