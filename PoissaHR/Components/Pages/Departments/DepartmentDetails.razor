@@ -40,10 +40,13 @@ else
                             <MudTd>@employee.JobTitle</MudTd>
                             <MudTd>@employee.Type</MudTd>
                             <MudTd>@employee.Status</MudTd>
+                            <MudTd>
+                                <MudIconButton Icon="@Icons.Material.Filled.Visibility" OnClick="@(() => GoToEmployee(employee.EmployeeId))" />
+                            </MudTd>
                         }
                         else
                         {
-                            <p>Ei työntekijöitä</p>
+                            <MudTd ColSpan="4">Ei työntekijöitä</MudTd>
                         }
                     </RowTemplate>
                 </MudTable>
@@ -65,6 +68,9 @@ else
 @code {
     [Parameter]
     public Guid Id { get; set; }
+
+    [Parameter]
+    public Guid EmployeeId { get; set; }
 
     private DepartmentDto? department;
 

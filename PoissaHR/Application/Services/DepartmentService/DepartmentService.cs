@@ -38,6 +38,7 @@ namespace PoissaHR.Application.Services.DepartmentService
                 .Where(d => d.Id == id && !d.IsDeleted)
                 .Include(d => d.Company)
                 .Include(d => d.Employments)
+                    .ThenInclude(e => e.Employee)
                 .Select(d => new DepartmentDto
                 {
                     Id = d.Id,
@@ -48,6 +49,7 @@ namespace PoissaHR.Application.Services.DepartmentService
                     CurrentEmployees = d.Employments.Select(e => new EmploymentDto
                     {
                         Id = e.Id,
+                        EmployeeId = e.EmployeeId,
                         EmployeeName = e.Employee != null
                             ? $"{e.Employee.FirstName} {e.Employee.LastName}"
                             : null,
