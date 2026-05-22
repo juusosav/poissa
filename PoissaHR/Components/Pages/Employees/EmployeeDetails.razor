@@ -35,7 +35,9 @@ else
                 <MudText>Osasto: @employee.DepartmentName</MudText>
                 <MudText>Rooli: @employee.CurrentJobTitle</MudText>
                 <br />
-                <MudButton>Näytä kaikki</MudButton>
+                <MudButton OnClick="@(() => Navigation.NavigateTo($"/employees/{employee.Id}/employments"))">
+                    Näytä kaikki
+                </MudButton>
             </MudPaper>
         </MudItem>
 

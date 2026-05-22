@@ -6,6 +6,7 @@ using PoissaHR.Infrastructure.Data.Seeds;
 using PoissaHR.Application.Services.EmployeeService;
 using PoissaHR.Application.Services.DepartmentService;
 using PoissaHR.Application.Services.AbsenceService;
+using PoissaHR.Application.Services.EmploymentService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +26,7 @@ builder.Services.AddMudServices();
 builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 builder.Services.AddScoped<IAbsenceService, AbsenceService>();
 builder.Services.AddScoped<IDepartmentService, DepartmentService>();
+builder.Services.AddScoped<IEmploymentService, EmploymentService>();
 
 builder.Services.AddMudBlazorSnackbar(config =>
 {

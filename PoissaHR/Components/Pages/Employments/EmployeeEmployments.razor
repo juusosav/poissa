@@ -1,0 +1,53 @@
+﻿@using PoissaHR.Application.Services.EmploymentService
+@using PoissaHR.Shared.Dto
+
+@inject IEmploymentService EmploymentService
+@inject NavigationManager Navigation
+
+@page "/employees/{Id:guid}/employments"
+
+@if (employments == null || !employments.Any())
+{
+    <p>Ladataan työsuhdelistaa...</p>
+}
+else
+{
+    <MudPaper Class="pa-4">
+
+        <MudStack Row="true" Justify="Justify.SpaceBetween">
+            <MudText Typo="Typo.h5">Työsuhteet</MudText>
+            <MudButton Variant="Variant.Filled">+ Lisää</MudButton>
+        </MudStack>
+
+        <MudTable Items="@employments" Striped="true" Bordered="true">
+            <HeaderContent>
+                <MudTh>Titteli</MudTh>
+                <MudTh>Tyyppi</MudTh>
+                <MudTh>Status</MudTh>
+            </HeaderContent>
+
+            <RowTemplate Context="d">
+                <MudTd>@d.JobTitle</MudTd>
+                <MudTd>@d.Type</MudTd>
+                <MudTd>@d.Status</MudTd>
+                <!-- <MudTd>
+                    <MudIconButton Icon="@Icons.Material.Filled.Visibility" OnClick="@(() => GoToDetails(@d.Id))" />
+                </MudTd> -->
+            </RowTemplate>
+        </MudTable>
+
+    </MudPaper>
+}
+
+@code {
+    [Parameter]
+    public Guid Id { get; set; }
+
+    private List<EmploymentDto> employments = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var employmentList = await EmploymentService.GetEmploymentsByEmployeeIdAsync(Id);
+        employments = employmentList.ToList();
+    }
+}
