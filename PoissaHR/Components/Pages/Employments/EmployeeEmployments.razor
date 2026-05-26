@@ -19,7 +19,11 @@ else
             <MudButton Variant="Variant.Filled">+ Lisää</MudButton>
         </MudStack>
 
-        <MudTable Items="@employments" Striped="true" Bordered="true">
+        <MudTable Items="@employments"
+                  Hover="true"
+                  Striped="true"
+                  Bordered="true"
+                  Breakpoint="Breakpoint.None">
             <HeaderContent>
                 <MudTh>Titteli</MudTh>
                 <MudTh>Tyyppi</MudTh>

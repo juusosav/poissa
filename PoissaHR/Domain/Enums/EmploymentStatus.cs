@@ -1,9 +1,12 @@
-﻿namespace PoissaHR.Domain.Enums
+﻿using System.ComponentModel;
+
+namespace PoissaHR.Domain.Enums
 {
     public enum EmploymentStatus
     {
         Aktiivinen,
-        Eiaktiivinen,
+        [Description("Ei Aktiivinen")]
+        EiAktiivinen,
         Irtisanottu,
         Lomalla,
         Eläkkeellä

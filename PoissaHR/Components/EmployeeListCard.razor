@@ -4,7 +4,12 @@
 @inject IEmployeeService EmployeeService
 @inject NavigationManager Navigation
 
-<MudTable Items="@Employees" Hover="true" Bordered="true" Striped="true">
+<MudTable Items="@Employees"
+          Hover="true"
+          Bordered="true"
+          Striped="true"
+          Breakpoint="Breakpoint.None">
+
     <HeaderContent>
         <MudTh>Etunimi</MudTh>
         <MudTh>Sukunimi</MudTh>
