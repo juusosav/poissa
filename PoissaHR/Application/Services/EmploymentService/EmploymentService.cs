@@ -33,5 +33,24 @@ namespace PoissaHR.Application.Services.EmploymentService
 
             return employments;
         }
+
+        public async Task<EmploymentEditDto> GetEmployeeForEditAsync(Guid employeeId)
+        {
+            var employment = await _context.Employments
+                .Where(e => e.Id == employeeId)
+                .Include(e => e.Employee)
+                .Select(e => new EmploymentEditDto
+                {
+                    Id = e.Id,
+                    EmployeeName = e.Employee.FirstName,
+                    JobTitle = e.JobTitle,
+                    Status = e.Status.ToString(), 
+                    Type = e.Type.ToString()
+                })
+                .AsNoTracking()
+                .FirstOrDefaultAsync();
+
+            return employment;
+        }
     }
 }

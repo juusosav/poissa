@@ -1,0 +1,68 @@
+﻿@using PoissaHR.Application.Services.EmploymentService
+@using PoissaHR.Shared.Dto
+
+@inject IEmploymentService EmploymentService
+@inject NavigationManager Navigation
+
+@page "/employees/{Id:guid}/employments"
+
+@if (model == null)
+{
+    <p>Ladataan työsuhteen tietoja...</p>
+}
+else
+{
+    <MudPaper Class="pa-4">
+        <MudText Typo="Typo.h5" GutterBottom="true">
+            Muokkaa työsuhteen tietoja
+        </MudText>
+
+        <MudForm @ref="_form">
+            <MudGrid>
+                <MudItem xs="12" md="6">
+                    <MudTextField Label="Etunimi"
+                                  @bind-Value="model.FirstName"
+                                  Required="true" />
+                </MudItem>
+                <MudItem xs="12" md="6">
+                    <MudTextField Label="Sukunimi"
+                                  @bind-Value="model.LastName"
+                                  Required="true" />
+                </MudItem>
+                <MudItem xs="12" md="6">
+                    <MudTextField Label="Sähköposti"
+                                  @bind-Value="model.Email"
+                                  Required="true" />
+                </MudItem>
+                <MudItem xs="12" md="6">
+                    <MudTextField Label="Puhelinnumero"
+                                  @bind-Value="model.Phone"
+                                  Required="true" />
+                </MudItem>
+            </MudGrid>
+
+        </MudForm>
+    </MudPaper>
+
+
+}
+@code {
+    [Parameter]
+    public Guid Id { get; set; }
+
+    private EmployeeEditDto model = new();
+    MudForm? _form;
+
+    /*protected override async Task OnInitializedAsync()
+    {
+        var employment = await EmploymentService.GetEmployeeForEditAsync(Id);
+
+        if (employment == null)
+        {
+            Navigation.NavigateTo("/employees");
+            return;
+        }
+
+        model = employment;
+    }*/
+}
