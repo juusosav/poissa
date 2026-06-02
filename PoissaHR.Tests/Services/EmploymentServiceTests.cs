@@ -2,6 +2,7 @@
 using PoissaHR.Shared.Dto;
 using PoissaHR.Tests.Data;
 using PoissaHR.Domain.Entities;
+using PoissaHR.Domain.Enums;
 using PoissaHR.Infrastructure.Data;
 using System;
 using System.Collections.Generic;
@@ -52,6 +53,8 @@ namespace PoissaHR.Tests.Services
                 Id = Guid.NewGuid(),
                 EmployeeId = employee.Id,
                 DepartmentId = department.Id,
+                Status = EmploymentStatus.Aktiivinen,
+                Type = EmploymentType.OsaAikainen,
                 CompanyId = company.Id,
                 StartDate = DateTime.UtcNow.AddMonths(-6),
                 EndDate = null
@@ -101,6 +104,8 @@ namespace PoissaHR.Tests.Services
                 EmployeeId = employee.Id,
                 DepartmentId = department.Id,
                 CompanyId = company.Id,
+                Status = EmploymentStatus.Aktiivinen,
+                Type = EmploymentType.OsaAikainen,
                 StartDate = DateTime.UtcNow.AddMonths(-6),
                 EndDate = null
             };

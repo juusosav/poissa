@@ -5,18 +5,11 @@ using PoissaHR.Shared.Dto;
 
 namespace PoissaHR.Application.Services.EmployeeService
 {
-    public class EmployeeService : IEmployeeService
+    public class EmployeeService(ApplicationDbContext context) : IEmployeeService
     {
-        private readonly ApplicationDbContext _context;
-
-        public EmployeeService(ApplicationDbContext context)
-        {
-            _context = context;
-        }
-
         public async Task<IEnumerable<EmployeeDto>> GetAllEmployeesAsync()
         {
-            var employees = await _context.Employees
+            var employees = await context.Employees
                 .Where(e => !e.IsDeleted)
                 .Include(e => e.Department)
                 .Select(e => new EmployeeDto
@@ -38,7 +31,7 @@ namespace PoissaHR.Application.Services.EmployeeService
 
         public async Task<EmployeeDto?> GetEmployeeByIdAsync(Guid id)
         {
-            var employee = await _context.Employees
+            var employee = await context.Employees
                 .Where(e => e.Id == id && !e.IsDeleted)
                 .Include(e => e.Department)
                 .Include(e => e.Employments)
@@ -79,7 +72,7 @@ namespace PoissaHR.Application.Services.EmployeeService
 
         public async Task<EmployeeEditDto?> GetEmployeeForEditAsync(Guid id)
         {
-            var employee = await _context.Employees
+            var employee = await context.Employees
                 .Where(e => e.Id == id && !e.IsDeleted)
                 .Select(e => new EmployeeEditDto
                 {
@@ -97,7 +90,7 @@ namespace PoissaHR.Application.Services.EmployeeService
 
         public async Task<bool> UpdateEmployeeAsync(EmployeeEditDto dto)
         {
-            var employee = await _context.Employees
+            var employee = await context.Employees
                 .Where(e => e.Id == dto.Id && !e.IsDeleted)
                 .FirstOrDefaultAsync();
 
@@ -109,7 +102,7 @@ namespace PoissaHR.Application.Services.EmployeeService
             employee.Email = dto.Email ?? employee.Email;
             employee.Phone = dto.Phone ?? employee.Phone;
 
-            await _context.SaveChangesAsync();
+            await context.SaveChangesAsync();
             return true;
         }
     }

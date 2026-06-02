@@ -27,11 +27,11 @@ else
                                   Required="true" />
                 </MudItem>
                 <MudItem xs="12" md="6">
-                    <MudSelect T="EmploymentStatus" 
+                    <MudSelect T="EmploymentStatus"
                                Label="Status"
-                               @bind-Value="model.EmploymentStatus"
+                               @bind-Value="model.Status"
                                Required="true">
-                        @foreach (var status in _statuses)  
+                        @foreach (var status in _statuses)
                         {
                             <MudSelectItem Value="@status">
                                 @status.GetDisplayName()
@@ -42,7 +42,7 @@ else
                 <MudItem xs="12" md="6">
                     <MudSelect T="EmploymentType"
                                Label="Tyyppi"
-                               @bind-Value="model.EmploymentType"
+                               @bind-Value="model.Type"
                                Required="true">
                         @foreach (var type in _types)
                         {
@@ -52,21 +52,22 @@ else
                         }
                     </MudSelect>
                 </MudItem>
-                <!--<MudStack Row="true" Spacing="2" Class="mt-4">
-                    <MudButton Variant="Variant.Filled"
-                               Color="Color.Primary"
-                               OnClick="Save">
-                        Tallenna
-                    </MudButton>
 
-                    <MudButton Variant="Variant.Outlined"
-                               OnClick="Cancel">
-                        Peruuta
-                    </MudButton>
-                </MudStack>-->
             </MudGrid>
 
         </MudForm>
+        <MudStack Row="true" Spacing="2" Class="mt-4">
+            <MudButton Variant="Variant.Filled"
+                       Color="Color.Primary"
+                       OnClick="Save">
+                Tallenna
+            </MudButton>
+
+            <MudButton Variant="Variant.Outlined"
+                       OnClick="Cancel">
+                Peruuta
+            </MudButton>
+        </MudStack>
     </MudPaper>
 
 
@@ -98,5 +99,24 @@ else
         }
 
         model = employment;
+    }
+
+    private void Cancel() => Navigation.NavigateTo($"/employees/{Id}/employments");
+
+    private void Save()
+    {
+        if (_form == null)
+        {
+            return;
+        }
+
+        _form.Validate();
+        if (!_form.IsValid)
+        {
+            return;
+        }
+
+        EmploymentService.UpdateEmploymentAsync(model);
+        Navigation.NavigateTo($"/employees/{Id}/employments");
     }
 }

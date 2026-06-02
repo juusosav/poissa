@@ -5,17 +5,11 @@ using PoissaHR.Shared.Dto;
 
 namespace PoissaHR.Application.Services.DepartmentService
 {
-    public class DepartmentService : IDepartmentService
+    public class DepartmentService(ApplicationDbContext context) : IDepartmentService
     {
-        private readonly ApplicationDbContext _context;
-        public DepartmentService(ApplicationDbContext context)
-        {
-            _context = context;
-        }
-
         public async Task<IEnumerable<DepartmentDto>> GetAllDepartmentsAsync()
         {
-            var departments = await _context.Departments
+            var departments = await context.Departments
                 .Where(d => !d.IsDeleted)
                 .Include(d => d.Company)
                 .Select(d => new DepartmentDto
@@ -34,7 +28,7 @@ namespace PoissaHR.Application.Services.DepartmentService
 
         public async Task<DepartmentDto?> GetDepartmentByIdAsync(Guid id)
         {
-            var department = await _context.Departments
+            var department = await context.Departments
                 .Where(d => d.Id == id && !d.IsDeleted)
                 .Include(d => d.Company)
                 .Include(d => d.Employments)
@@ -54,8 +48,8 @@ namespace PoissaHR.Application.Services.DepartmentService
                             ? $"{e.Employee.FirstName} {e.Employee.LastName}"
                             : null,
                         JobTitle = e.JobTitle,
-                        Type = e.Type.ToString(),
-                        Status = e.Status.ToString()
+                        Type = e.Type,
+                        Status = e.Status
                     }).ToList()
                 })
                 .AsNoTracking()
@@ -66,7 +60,7 @@ namespace PoissaHR.Application.Services.DepartmentService
 
         public async Task<DepartmentEditDto?> GetDepartmentForEditAsync(Guid id)
         {
-            var department = await _context.Departments
+            var department = await context.Departments
                 .Where(d => d.Id == id && !d.IsDeleted)
                 .Select(d => new DepartmentEditDto
                 {
@@ -81,7 +75,7 @@ namespace PoissaHR.Application.Services.DepartmentService
 
         public async Task<bool> UpdateDepartmentAsync(DepartmentEditDto dto)
         {
-            var department = await _context.Departments
+            var department = await context.Departments
                 .Where(d => d.Id == dto.Id && !d.IsDeleted)
                 .FirstOrDefaultAsync();
 
@@ -90,8 +84,8 @@ namespace PoissaHR.Application.Services.DepartmentService
 
             department.Name = dto.Name;
 
-            _context.Departments.Update(department);
-            await _context.SaveChangesAsync();
+            context.Departments.Update(department);
+            await context.SaveChangesAsync();
             return true;
         }
     }
