@@ -34,10 +34,10 @@ namespace PoissaHR.Application.Services.EmploymentService
             return employments;
         }
 
-        public async Task<EmploymentEditDto> GetEmployeeForEditAsync(Guid employeeId)
+        public async Task<EmploymentEditDto?> GetEmploymentForEditAsync(Guid id)
         {
             var employment = await _context.Employments
-                .Where(e => e.Id == employeeId)
+                .Where(e => e.Id == id)
                 .Include(e => e.Employee)
                 .Select(e => new EmploymentEditDto
                 {

@@ -30,13 +30,13 @@ else
                 <MudTh>Status</MudTh>
             </HeaderContent>
 
-            <RowTemplate Context="d">
-                <MudTd>@d.JobTitle</MudTd>
-                <MudTd>@d.Type</MudTd>
-                <MudTd>@d.Status</MudTd>
-                <!-- <MudTd>
-                    <MudIconButton Icon="@Icons.Material.Filled.Visibility" OnClick="@(() => GoToDetails(@d.Id))" />
-                </MudTd> -->
+            <RowTemplate>
+                <MudTd>@context.JobTitle</MudTd>
+                <MudTd>@context.Type</MudTd>
+                <MudTd>@context.Status</MudTd>
+                <MudTd>
+                    <MudIconButton Icon="@Icons.Material.Filled.Edit" OnClick="@(() => GoToDetails(context.Id))" />
+                </MudTd>
             </RowTemplate>
         </MudTable>
 
@@ -54,4 +54,6 @@ else
         var employmentList = await EmploymentService.GetEmploymentsByEmployeeIdAsync(Id);
         employments = employmentList.ToList();
     }
+
+    private void GoToDetails(Guid employmentId) => Navigation.NavigateTo($"/employees/{Id}/employments/{employmentId}");
 }

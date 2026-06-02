@@ -1,11 +1,12 @@
 ﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace PoissaHR.Domain.Enums
 {
     public enum EmploymentType
     {
         Kokoaikainen,
-        [Description("Osa-aikainen")]
+        [Display(Name = "Osa-aikainen")]
         OsaAikainen,
         Sopimus,
         Määräaikainen,

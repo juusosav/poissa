@@ -1,10 +1,12 @@
 ﻿@using PoissaHR.Application.Services.EmploymentService
 @using PoissaHR.Shared.Dto
+@using PoissaHR.Domain.Enums
+@using PoissaHR.Shared.Extensions
 
 @inject IEmploymentService EmploymentService
 @inject NavigationManager Navigation
 
-@page "/employees/{Id:guid}/employments"
+@page "/employees/{Id:guid}/employments/{EmploymentId:guid}"
 
 @if (model == null)
 {
@@ -20,25 +22,48 @@ else
         <MudForm @ref="_form">
             <MudGrid>
                 <MudItem xs="12" md="6">
-                    <MudTextField Label="Etunimi"
-                                  @bind-Value="model.FirstName"
+                    <MudTextField Label="Titteli"
+                                  @bind-Value="model.JobTitle"
                                   Required="true" />
                 </MudItem>
                 <MudItem xs="12" md="6">
-                    <MudTextField Label="Sukunimi"
-                                  @bind-Value="model.LastName"
-                                  Required="true" />
+                    <MudSelect T="EmploymentStatus" 
+                               Label="Status"
+                               @bind-Value="model.EmploymentStatus"
+                               Required="true">
+                        @foreach (var status in _statuses)  
+                        {
+                            <MudSelectItem Value="@status">
+                                @status.GetDisplayName()
+                            </MudSelectItem>
+                        }
+                    </MudSelect>
                 </MudItem>
                 <MudItem xs="12" md="6">
-                    <MudTextField Label="Sähköposti"
-                                  @bind-Value="model.Email"
-                                  Required="true" />
+                    <MudSelect T="EmploymentType"
+                               Label="Tyyppi"
+                               @bind-Value="model.EmploymentType"
+                               Required="true">
+                        @foreach (var type in _types)
+                        {
+                            <MudSelectItem Value="@type">
+                                @type.GetDisplayName()
+                            </MudSelectItem>
+                        }
+                    </MudSelect>
                 </MudItem>
-                <MudItem xs="12" md="6">
-                    <MudTextField Label="Puhelinnumero"
-                                  @bind-Value="model.Phone"
-                                  Required="true" />
-                </MudItem>
+                <!--<MudStack Row="true" Spacing="2" Class="mt-4">
+                    <MudButton Variant="Variant.Filled"
+                               Color="Color.Primary"
+                               OnClick="Save">
+                        Tallenna
+                    </MudButton>
+
+                    <MudButton Variant="Variant.Outlined"
+                               OnClick="Cancel">
+                        Peruuta
+                    </MudButton>
+                </MudStack>-->
             </MudGrid>
 
         </MudForm>
@@ -50,12 +75,21 @@ else
     [Parameter]
     public Guid Id { get; set; }
 
-    private EmployeeEditDto model = new();
+    [Parameter]
+    public Guid EmploymentId { get; set; }
+
+    private readonly EmploymentStatus[] _statuses =
+        Enum.GetValues<EmploymentStatus>();
+
+    private readonly EmploymentType[] _types =
+        Enum.GetValues<EmploymentType>();
+
+    private EmploymentEditDto model = new();
     MudForm? _form;
 
-    /*protected override async Task OnInitializedAsync()
+    protected override async Task OnInitializedAsync()
     {
-        var employment = await EmploymentService.GetEmployeeForEditAsync(Id);
+        var employment = await EmploymentService.GetEmploymentForEditAsync(EmploymentId);
 
         if (employment == null)
         {
@@ -64,5 +98,5 @@ else
         }
 
         model = employment;
-    }*/
+    }
 }

@@ -22,7 +22,10 @@
         <MudTd>@employee.DepartmentName</MudTd>
 
         <MudTd>
-            <MudIconButton Icon="@Icons.Material.Filled.Visibility" OnClick="@(() => GoToDetails(employee.Id))" />
+            <MudIconButton 
+                Icon="@Icons.Material.Filled.Visibility" 
+                title="Näytä"
+                OnClick="@(() => GoToDetails(employee.Id))" />
         </MudTd>
     </RowTemplate>
 </MudTable>
