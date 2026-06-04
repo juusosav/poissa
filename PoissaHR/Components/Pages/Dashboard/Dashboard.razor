@@ -2,14 +2,51 @@
 
 <PageTitle>Koti</PageTitle>
 
-<MudPaper Class="d-flex justify-center align-center">
-    <MudContainer Style="max-width: 600px; text-align: center;">
+<MudPaper Class="d-flex">
+    <MudContainer Style="text-align: center;">
         <br />
         <MudText Typo="Typo.h4" GutterBottom="true">Tervetuloa PoissaHR-järjestelmään!</MudText>
         <br />
-        <MudText Class="align-self-center" Typo="Typo.body1">
-            Tämä on PoissaHR-järjestelmän kotisivu. <br /><br />Käytä navigaatiopalkkia löytääksesi tietoa työntekijöistä, poissaoloista ja muista HR-tiedoista.
-        </MudText>
+
+        <MudGrid Spacing="3">
+            <MudItem xs="12" md="4">
+                <MudPaper Class="pa-4">
+                    <MudText Typo="Typo.body1">
+                        <strong>Työntekijät</strong>
+                        <br />
+                    </MudText>
+                </MudPaper>
+            </MudItem>
+            <MudItem xs="12" md="4">
+                <MudPaper Class="pa-4">
+                    <MudText Typo="Typo.body1">
+                        <strong>Osastot</strong>
+                        <br />
+                    </MudText>
+                </MudPaper>
+            </MudItem>
+
+            <MudItem xs="12" md="4">
+                <MudPaper Class="pa-4">
+                    <MudText Typo="Typo.body1">
+                        <strong>Poissaoloja tänään</strong>
+                        <br />
+                    </MudText>
+                </MudPaper>
+            </MudItem>
+            <MudItem xs="12" md="4">
+                <MudPaper Class="pa-4">
+                    <MudText Typo="Typo.body1">
+                        <strong>Tulevat lomat</strong>
+                        <br />
+                    </MudText>
+                </MudPaper>
+            </MudItem>
+        </MudGrid>
         <br />
     </MudContainer>
 </MudPaper>
+
+@code {
+
+}

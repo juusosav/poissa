@@ -5,17 +5,11 @@ using PoissaHR.Shared.Dto;
 
 namespace PoissaHR.Application.Services.AbsenceService
 {
-    public class AbsenceService : IAbsenceService
+    public class AbsenceService(ApplicationDbContext context) : IAbsenceService
     {
-        private readonly ApplicationDbContext _context;
-        public AbsenceService(ApplicationDbContext context)
-        {
-            _context = context;
-        }
-
         public async Task<IEnumerable<AbsenceDto>> GetAllAbsencesAsync()
         {
-            var absences = await _context.Absences
+            var absences = await context.Absences
                 .Include(a => a.Employment)
                 .Select(a => new AbsenceDto
                 {
