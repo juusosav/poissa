@@ -4,6 +4,7 @@
 @using PoissaHR.Shared.Extensions
 
 @inject IEmploymentService EmploymentService
+@inject ISnackbar Snackbar
 @inject NavigationManager Navigation
 
 @page "/employees/{Id:guid}/employments/{EmploymentId:guid}"
@@ -52,7 +53,12 @@ else
                         }
                     </MudSelect>
                 </MudItem>
-
+                <MudItem xs="12" md="6">
+                    <MudDatePicker PickerVariant="PickerVariant.Dialog"
+                                   Label="Päättymispäivä"
+                                   DateFormat="dd.MM.yyyy">
+                    </MudDatePicker>
+                </MudItem>
             </MudGrid>
 
         </MudForm>
@@ -117,6 +123,9 @@ else
         }
 
         EmploymentService.UpdateEmploymentAsync(model);
+
+        Snackbar.Add("Työsuhteen tiedot päivitetty onnistuneesti", Severity.Success);
+
         Navigation.NavigateTo($"/employees/{Id}/employments");
     }
 }

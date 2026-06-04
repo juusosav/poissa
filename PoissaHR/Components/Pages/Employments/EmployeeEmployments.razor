@@ -29,12 +29,16 @@ else
                 <MudTh>Titteli</MudTh>
                 <MudTh>Tyyppi</MudTh>
                 <MudTh>Status</MudTh>
+                <MudTh>Aloituspäivä</MudTh>
+                <MudTh>Päättymispäivä</MudTh>
             </HeaderContent>
 
             <RowTemplate>
                 <MudTd>@context.JobTitle</MudTd>
                 <MudTd>@context.Type.GetDisplayName()</MudTd>
                 <MudTd>@context.Status.GetDisplayName()</MudTd>
+                <MudTd>@context.StartDate.ToString("dd:MM:yyyy")</MudTd>
+                <MudTd>@context.EndDate?.ToString("dd:MM:yyyy")</MudTd>
                 <MudTd>
                     <MudIconButton Icon="@Icons.Material.Filled.Edit" OnClick="@(() => GoToDetails(context.Id))" />
                 </MudTd>

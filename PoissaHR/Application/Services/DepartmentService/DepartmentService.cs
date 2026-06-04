@@ -12,13 +12,19 @@ namespace PoissaHR.Application.Services.DepartmentService
             var departments = await context.Departments
                 .Where(d => !d.IsDeleted)
                 .Include(d => d.Company)
+                .Include(d => d.Employments)
+                    .ThenInclude(d => d.Employee)
                 .Select(d => new DepartmentDto
                 {
                     Id = d.Id,
                     Name = d.Name,
                     CompanyName = d.Company != null
                         ? d.Company.Name
-                        : null
+                        : null,
+                    CurrentEmployees = d.Employments.Select(e => new EmploymentDto
+                    {
+                        Id = e.Id
+                    }).ToList()
                 })
                 .AsNoTracking()
                 .ToListAsync();
