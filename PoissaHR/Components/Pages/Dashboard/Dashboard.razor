@@ -1,4 +1,9 @@
-﻿@page "/"
+﻿@using PoissaHR.Application.Services.DashboardService
+@using PoissaHR.Shared.Dto
+
+@inject IDashboardService DashboardService
+
+@page "/"
 
 <PageTitle>Koti</PageTitle>
 
@@ -14,6 +19,7 @@
                     <MudText Typo="Typo.body1">
                         <strong>Työntekijät</strong>
                         <br />
+                        <MudText>@dashboardData?.EmployeeCount</MudText>
                     </MudText>
                 </MudPaper>
             </MudItem>
@@ -22,6 +28,7 @@
                     <MudText Typo="Typo.body1">
                         <strong>Osastot</strong>
                         <br />
+                        <MudText>@dashboardData?.DepartmentCount</MudText>
                     </MudText>
                 </MudPaper>
             </MudItem>
@@ -31,6 +38,7 @@
                     <MudText Typo="Typo.body1">
                         <strong>Poissaoloja tänään</strong>
                         <br />
+                        <MudText>@dashboardData?.AbsenceCount</MudText>
                     </MudText>
                 </MudPaper>
             </MudItem>
@@ -39,6 +47,7 @@
                     <MudText Typo="Typo.body1">
                         <strong>Tulevat lomat</strong>
                         <br />
+                        <MudText>@dashboardData?.UpcomingVacationsCount</MudText>
                     </MudText>
                 </MudPaper>
             </MudItem>
@@ -48,5 +57,11 @@
 </MudPaper>
 
 @code {
+    private DashboardDto? dashboardData = new();
 
+    protected override async Task OnInitializedAsync()
+    {
+        var data = await DashboardService.GetDashboardAsync();
+        dashboardData = data;
+    }
 }

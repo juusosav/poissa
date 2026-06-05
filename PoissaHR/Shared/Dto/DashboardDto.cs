@@ -2,8 +2,9 @@
 {
     public class DashboardDto
     {
-        public List<EmployeeDto?> Employees { get; set; } = [];
-        public List<AbsenceDto?> Absences { get; set; } = [];
-        public List<DepartmentDto?> Departments { get; set; } = [];
+        public int EmployeeCount { get; set; }
+        public int DepartmentCount { get; set; }
+        public int AbsenceCount { get; set; }
+        public int UpcomingVacationsCount { get; set; }
     }
 }
