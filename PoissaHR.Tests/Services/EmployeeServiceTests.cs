@@ -128,6 +128,48 @@ namespace PoissaHR.Tests.Services
         }
 
         [Fact]
+        public async Task CreateEmployeeAsync_ReturnsTrue_WhenEmployeeIsCreated()
+        {
+            // Arrange
+            var company = new Company
+            {
+                Id = Guid.NewGuid(),
+                Name = "Test Company"
+            };
+            var department = new Department
+            {
+                Id = Guid.NewGuid(),
+                Name = "IT",
+                CompanyId = company.Id
+            };
+
+            var dto = new EmployeeDto
+            {
+                Id = Guid.NewGuid(),
+                FirstName = "John",
+                LastName = "Doe",
+                Email = "test.email@test.com",
+                Phone = "1234567890"
+            };
+
+            _context.Companies.Add(company);
+            _context.Departments.Add(department);
+
+            await _context.SaveChangesAsync(TestContext.Current.CancellationToken);
+
+
+            // Act
+            var result = await _sut.CreateEmployeeAsync(dto);
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(dto.FirstName, result.FirstName);
+            Assert.Equal(dto.LastName, result.LastName);
+            Assert.Equal(dto.Email, result.Email);
+            Assert.Equal(dto.Phone, result.Phone);
+        }
+
+        [Fact]
         public async Task UpdateEmployeeAsync_ReturnsTrue_WhenEmployeeIsUpdated()
         {
             // Arrange

@@ -88,6 +88,32 @@ namespace PoissaHR.Application.Services.EmployeeService
             return employee;
         }
 
+        public async Task<EmployeeDto> CreateEmployeeAsync(EmployeeDto dto)
+        {
+
+            var employee = new Employee
+            {
+                Id = Guid.NewGuid(),
+                FirstName = dto.FirstName,
+                LastName = dto.LastName,
+                Email = dto.Email ?? string.Empty,
+                Phone = dto.Phone ?? string.Empty
+            };
+
+            context.Employees.Add(employee);
+
+            await context.SaveChangesAsync();
+
+            return new EmployeeDto
+            {
+                Id = employee.Id,
+                FirstName = employee.FirstName,
+                LastName = employee.LastName,
+                Email = employee.Email,
+                Phone = employee.Phone
+            };
+        }
+
         public async Task<bool> UpdateEmployeeAsync(EmployeeEditDto dto)
         {
             var employee = await context.Employees

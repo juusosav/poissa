@@ -2,13 +2,20 @@
 @using PoissaHR.Shared.Dto
 
 @inject IEmployeeService EmployeeService
+@inject NavigationManager Navigation
 
 @page "/employees"
 
 <PageTitle>Employee List</PageTitle>
 
 <MudPaper Class="pa-4">
-    <MudText Typo="Typo.h5" GutterBottom="true">Työntekijät</MudText>
+    <MudText Class="d-flex justify-space-between" Typo="Typo.h5" GutterBottom="true">
+        Työntekijät
+        <MudButton OnClick="NavigateToCreateEmployee">
+            <MudIcon Icon="@Icons.Material.Filled.Add" />
+            Lisää uusi työntekijä
+        </MudButton>
+    </MudText>
     @if (employees == null || !employees.Any())
     {
         <p>Ladataan työntekijälistaa...</p>
@@ -28,4 +35,6 @@
         var employeeList = await EmployeeService.GetAllEmployeesAsync();
         employees = employeeList.ToList();
     }
+
+    private void NavigateToCreateEmployee() => Navigation.NavigateTo("/employees/create-employee");
 }
