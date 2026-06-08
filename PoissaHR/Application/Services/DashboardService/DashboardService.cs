@@ -18,7 +18,8 @@ namespace PoissaHR.Application.Services.DashboardService
                     DepartmentCount = context.Departments.Count(),
                     EmployeeCount = context.Employments.Count(e => e.EndDate == null),
                     AbsenceCount = context.Absences.Count(a => a.StartDate >= DateTime.UtcNow),
-                    UpcomingVacationsCount = context.Absences.Count(a => a.StartDate >= DateTime.UtcNow && a.StartDate <= DateTime.UtcNow.AddMonths(1) && a.Type == AbsenceType.Loma)
+                    UpcomingVacationsCount = context.Absences.Count(a => a.StartDate >= DateTime.UtcNow
+                        && a.StartDate <= DateTime.UtcNow.AddMonths(1) && a.Type == AbsenceType.Loma)
                 })
                 .ToListAsync();
 

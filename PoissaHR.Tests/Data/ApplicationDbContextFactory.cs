@@ -17,7 +17,6 @@ namespace PoissaHR.Tests.Data
                 .UseInMemoryDatabase(Guid.NewGuid().ToString())
                 .Options;
             var context = new ApplicationDbContext(options);
-            DbSeeder.SeedAsync(context).Wait();
             return context;
         }
     }

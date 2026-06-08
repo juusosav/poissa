@@ -15,41 +15,53 @@
 
         <MudGrid Spacing="3">
             <MudItem xs="12" md="4">
-                <MudPaper Class="pa-4">
+                <MudButton Href="/employees"
+                           Class="pa-4 dashboard-button"
+                           Variant="Variant.Filled"
+                           Style="background-color: white; min-width: 200px;">
                     <MudText Typo="Typo.body1">
                         <strong>Työntekijät</strong>
                         <br />
                         <MudText>@dashboardData?.EmployeeCount</MudText>
                     </MudText>
-                </MudPaper>
+                </MudButton>
             </MudItem>
             <MudItem xs="12" md="4">
-                <MudPaper Class="pa-4">
+                <MudButton Href="/departments"
+                           Class="pa-4 dashboard-button"
+                           Variant="Variant.Filled"
+                           Style="background-color: white; min-width: 200px;">
                     <MudText Typo="Typo.body1">
                         <strong>Osastot</strong>
                         <br />
                         <MudText>@dashboardData?.DepartmentCount</MudText>
                     </MudText>
-                </MudPaper>
+                </MudButton>
             </MudItem>
 
             <MudItem xs="12" md="4">
-                <MudPaper Class="pa-4">
+                <MudButton Href="/employees"
+                           Class="pa-4 dashboard-button"
+                           Variant="Variant.Filled"
+                           Style="background-color: white; min-width: 200px;">
                     <MudText Typo="Typo.body1">
                         <strong>Poissaoloja tänään</strong>
                         <br />
                         <MudText>@dashboardData?.AbsenceCount</MudText>
                     </MudText>
-                </MudPaper>
+                </MudButton>
             </MudItem>
             <MudItem xs="12" md="4">
-                <MudPaper Class="pa-4">
+                <MudButton Href="/employees"
+                           Class="pa-4 dashboard-button"
+                           Variant="Variant.Filled"
+                           Style="background-color: white; min-width: 200px;">
                     <MudText Typo="Typo.body1">
                         <strong>Tulevat lomat</strong>
                         <br />
                         <MudText>@dashboardData?.UpcomingVacationsCount</MudText>
                     </MudText>
-                </MudPaper>
+                </MudButton>
             </MudItem>
         </MudGrid>
         <br />
