@@ -16,7 +16,6 @@ namespace PoissaHR.Infrastructure.Data.Configs.Entities
             modelBuilder.Entity<Company>()
                 .HasMany(c => c.Employees)
                 .WithOne(e => e.Company)
-                .HasForeignKey(e => e.CompanyId)
                 .OnDelete(DeleteBehavior.Restrict);
         }
     }

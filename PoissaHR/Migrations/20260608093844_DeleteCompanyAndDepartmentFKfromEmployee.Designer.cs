@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PoissaHR.Infrastructure.Data;
 
@@ -10,9 +11,11 @@ using PoissaHR.Infrastructure.Data;
 namespace PoissaHR.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260608093844_DeleteCompanyAndDepartmentFKfromEmployee")]
+    partial class DeleteCompanyAndDepartmentFKfromEmployee
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.27");
@@ -53,8 +56,6 @@ namespace PoissaHR.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ApprovedById");
-
-                    b.HasIndex("CompanyId");
 
                     b.HasIndex("EmploymentId");
 
@@ -190,8 +191,6 @@ namespace PoissaHR.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CompanyId");
-
                     b.HasIndex("DepartmentId");
 
                     b.HasIndex("EmployeeId");
@@ -206,12 +205,6 @@ namespace PoissaHR.Migrations
                         .HasForeignKey("ApprovedById")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("PoissaHR.Domain.Entities.Company", "Company")
-                        .WithMany()
-                        .HasForeignKey("CompanyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("PoissaHR.Domain.Entities.Employment", "Employment")
                         .WithMany("Absences")
                         .HasForeignKey("EmploymentId")
@@ -219,8 +212,6 @@ namespace PoissaHR.Migrations
                         .IsRequired();
 
                     b.Navigation("ApprovedBy");
-
-                    b.Navigation("Company");
 
                     b.Navigation("Employment");
                 });
@@ -257,12 +248,6 @@ namespace PoissaHR.Migrations
 
             modelBuilder.Entity("PoissaHR.Domain.Entities.Employment", b =>
                 {
-                    b.HasOne("PoissaHR.Domain.Entities.Company", "Company")
-                        .WithMany()
-                        .HasForeignKey("CompanyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("PoissaHR.Domain.Entities.Department", "Department")
                         .WithMany("Employments")
                         .HasForeignKey("DepartmentId")
@@ -274,8 +259,6 @@ namespace PoissaHR.Migrations
                         .HasForeignKey("EmployeeId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.Navigation("Company");
 
                     b.Navigation("Department");
 

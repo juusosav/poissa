@@ -24,15 +24,14 @@ namespace PoissaHR.Infrastructure.Data.Seeds
                     Id = Guid.NewGuid(),
                     FirstName = "Matti",
                     LastName = "Meikäläinen",
-                    Portrait = "/images/placeholder_portrait.jpg",
-                    CompanyId = company.Id,
-                    DepartmentId = department.Id
+                    Portrait = "/images/placeholder_portrait.jpg"
                 };
                 var employment = new Employment
                 {
                     Id = Guid.NewGuid(),
                     EmployeeId = employee.Id,
                     DepartmentId = department.Id,
+                    CompanyId = company.Id,
                     JobTitle = "Asiakaspalvelija",
                     StartDate = DateTime.UtcNow.AddYears(-1),
                     EndDate = null
@@ -48,8 +47,17 @@ namespace PoissaHR.Infrastructure.Data.Seeds
                     Status = Domain.Enums.AbsenceStatus.Hyväksytty,
                     Notes = "Sairastui flunssaan"
                 };
+                employee.Company = company;
+                employee.Department = department;
 
+                department.Company = company;
 
+                employment.Employee = employee;
+                employment.Department = department;
+                employment.Company = company;
+
+                absence.Employment = employment;
+                absence.Company = company;
 
                 context.Companies.Add(company);
                 context.Departments.Add(department);

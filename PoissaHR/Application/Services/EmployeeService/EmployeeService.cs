@@ -2,6 +2,7 @@
 using PoissaHR.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using PoissaHR.Shared.Dto;
+using SQLitePCL;
 
 namespace PoissaHR.Application.Services.EmployeeService
 {
@@ -88,25 +89,35 @@ namespace PoissaHR.Application.Services.EmployeeService
             return employee;
         }
 
-        public async Task<EmployeeDto> CreateEmployeeAsync(EmployeeDto dto)
+        public async Task<EmployeeCreateDto> CreateEmployeeAsync(EmployeeCreateDto dto)
         {
+            var department = await context.Departments.FindAsync(dto.DepartmentId)
+                ?? throw new InvalidOperationException($"Department {dto.DepartmentId} not found.");
 
+#pragma warning disable CS8601 // Possible null reference assignment.
             var employee = new Employee
             {
                 Id = Guid.NewGuid(),
+                // TODO: Replace with current user's CompanyId once auth is implemented and add a CompanyService
+                Company = await context.Companies.FirstOrDefaultAsync(),
+                Department = department,
+                Portrait = dto.Portrait ?? string.Empty,
                 FirstName = dto.FirstName,
                 LastName = dto.LastName,
                 Email = dto.Email ?? string.Empty,
                 Phone = dto.Phone ?? string.Empty
             };
+#pragma warning restore CS8601 // Possible null reference assignment.
 
+            Console.WriteLine("Employee created with ID: " + employee.Id);
             context.Employees.Add(employee);
 
             await context.SaveChangesAsync();
 
-            return new EmployeeDto
+            return new EmployeeCreateDto
             {
                 Id = employee.Id,
+                Portrait = employee.Portrait,
                 FirstName = employee.FirstName,
                 LastName = employee.LastName,
                 Email = employee.Email,

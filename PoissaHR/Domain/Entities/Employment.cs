@@ -11,6 +11,7 @@ namespace PoissaHR.Domain.Entities
         public Guid CompanyId { get; set; }
         public Guid DepartmentId { get; set; }
         public Department Department { get; set; } = default!;
+        public Company Company { get; set; } = default!;
         public string JobTitle { get; set; } = "";
         public EmploymentType Type { get; set; }
         public EmploymentStatus Status { get; set; }

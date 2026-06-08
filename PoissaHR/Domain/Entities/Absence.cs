@@ -7,6 +7,7 @@ namespace PoissaHR.Domain.Entities
         public Guid Id { get; set; }
         public Guid EmploymentId { get; set; }
         public Guid CompanyId { get; set; }
+        public Company Company { get; set; } = default!;
         public Employment Employment { get; set; } = default!;
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }

@@ -1,7 +1,9 @@
-﻿@using PoissaHR.Application.Services.EmployeeService
+﻿@using PoissaHR.Application.Services.DepartmentService
+@using PoissaHR.Application.Services.EmployeeService
 @using PoissaHR.Shared.Dto
 
 @inject IEmployeeService EmployeeService
+@inject IDepartmentService DepartmentService
 @inject ISnackbar Snackbar
 @inject NavigationManager Navigation
 
@@ -15,6 +17,18 @@
     <MudForm @ref="_form">
         <MudGrid>
             <MudItem xs="12" md="6">
+                <MudSelect Placeholder="Valitse osasto"
+                           T="Guid?"
+                           Label="Osasto"
+                           @bind-Value="_selectedDepartmentId"
+                           Required="true">
+                    @foreach (var dept in departments)
+                    {
+                        <MudSelectItem T="Guid?" Value="@dept.Id">@dept.Name</MudSelectItem>
+                    }
+                </MudSelect>
+            </MudItem>
+            <MudItem xs="12" md="6">
                 <MudTextField Label="Etunimi"
                               @bind-Value="model.FirstName"
                               Required="true" />
@@ -22,6 +36,11 @@
             <MudItem xs="12" md="6">
                 <MudTextField Label="Sukunimi"
                               @bind-Value="model.LastName"
+                              Required="true" />
+            </MudItem>
+            <MudItem xs="12" md="6">
+                <MudTextField Label="Kuva"
+                              @bind-Value="model.Portrait"
                               Required="true" />
             </MudItem>
             <MudItem xs="12" md="6">
@@ -53,8 +72,17 @@
 
 
 @code {
-    private EmployeeDto model = new();
+    private EmployeeCreateDto model = new();
     private MudForm? _form;
+
+    private Guid? _selectedDepartmentId;
+
+    private List<DepartmentDto> departments = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        departments = (await DepartmentService.GetAllDepartmentsAsync()).ToList();
+    }
 
     public async Task HandleValidSubmit()
     {
@@ -65,6 +93,11 @@
 
         if (!_form.IsValid)
             return;
+
+        if (_selectedDepartmentId != null)
+        {
+            model.DepartmentId = _selectedDepartmentId.Value;
+        }
 
         try
         {
@@ -77,8 +110,9 @@
         }
 
         Snackbar.Add("Työntekijän lisätty onnistuneesti", Severity.Success);
+
+        Navigation.NavigateTo("/employees");
     }
 
     private void Cancel() => Navigation.NavigateTo($"/employees");
-
-    }
+}
