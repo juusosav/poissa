@@ -109,7 +109,6 @@ namespace PoissaHR.Application.Services.EmployeeService
             };
 #pragma warning restore CS8601 // Possible null reference assignment.
 
-            Console.WriteLine("Employee created with ID: " + employee.Id);
             context.Employees.Add(employee);
 
             await context.SaveChangesAsync();

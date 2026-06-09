@@ -46,8 +46,10 @@ namespace PoissaHR.Tests.Services
                 Id = Guid.NewGuid(),
                 FirstName = "John",
                 LastName = "Doe",
-                CompanyId = company.Id,
-                DepartmentId = department.Id
+                Email = "test.email@test.com",
+                Phone = "1234567890",
+                Company = company,
+                Department = department
             };
             var employment = new Employment
             {
@@ -97,9 +99,7 @@ namespace PoissaHR.Tests.Services
             {
                 Id = Guid.NewGuid(),
                 FirstName = "John",
-                LastName = "Doe",
-                CompanyId = company.Id,
-                DepartmentId = department.Id
+                LastName = "Doe"
             };
 
             _context.Companies.Add(company);
@@ -143,13 +143,15 @@ namespace PoissaHR.Tests.Services
                 CompanyId = company.Id
             };
 
-            var dto = new EmployeeDto
+            var dto = new EmployeeCreateDto
             {
                 Id = Guid.NewGuid(),
                 FirstName = "John",
                 LastName = "Doe",
                 Email = "test.email@test.com",
-                Phone = "1234567890"
+                Phone = "1234567890",
+                DepartmentId = department.Id,
+                CompanyId = company.Id
             };
 
             _context.Companies.Add(company);
@@ -188,9 +190,7 @@ namespace PoissaHR.Tests.Services
             {
                 Id = Guid.NewGuid(),
                 FirstName = "John",
-                LastName = "Doe",
-                CompanyId = company.Id,
-                DepartmentId = department.Id
+                LastName = "Doe"
             };
             var employment = new Employment
             {
