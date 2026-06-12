@@ -8,7 +8,7 @@ namespace PoissaHR.Domain.Enums
         Kokoaikainen,
         [Display(Name = "Osa-aikainen")]
         OsaAikainen,
-        Sopimus,
+        Oppisopimus,
         Määräaikainen,
         Harjoittelu
     }

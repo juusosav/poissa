@@ -34,7 +34,7 @@ else
                                Required="true">
                         @foreach (var status in _statuses)
                         {
-                            <MudSelectItem Value="@status">
+                            <MudSelectItem T="EmploymentStatus" Value="@status">
                                 @status.GetDisplayName()
                             </MudSelectItem>
                         }

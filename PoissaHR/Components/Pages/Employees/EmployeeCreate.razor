@@ -7,6 +7,8 @@
 @inject ISnackbar Snackbar
 @inject NavigationManager Navigation
 
+@rendermode InteractiveServer
+
 @page "/employees/create-employee"
 
 <MudPaper Class="pa-4">
@@ -39,9 +41,19 @@
                               Required="true" />
             </MudItem>
             <MudItem xs="12" md="6">
-                <MudTextField Label="Kuva"
-                              @bind-Value="model.Portrait"
-                              Required="true" />
+                <MudText>Kuva</MudText>
+                <MudFileUpload T="IBrowserFile"
+                               FilesChanged="OnFileSelected"
+                               Accept="image/*">
+                    <ActivatorContent>
+                        <MudButton Variant="Variant.Filled"
+                                   Color="Color.Primary"
+                                   StartIcon="@Icons.Material.Filled.CloudUpload">
+                            Lataa kuva
+                        </MudButton>
+                    </ActivatorContent>
+                </MudFileUpload>
+
             </MudItem>
             <MudItem xs="12" md="6">
                 <MudTextField Label="Sähköposti"
@@ -75,6 +87,10 @@
     private EmployeeCreateDto model = new();
     private MudForm? _form;
 
+    private IBrowserFile? _portraitImage;
+
+    [Inject] IWebHostEnvironment Environment { get; set; } = default!;
+
     private Guid? _selectedDepartmentId;
 
     private List<DepartmentDto> departments = new();
@@ -82,6 +98,11 @@
     protected override async Task OnInitializedAsync()
     {
         departments = (await DepartmentService.GetAllDepartmentsAsync()).ToList();
+    }
+
+    private async Task OnFileSelected(IBrowserFile file)
+    {
+        _portraitImage = file;
     }
 
     public async Task HandleValidSubmit()
@@ -93,6 +114,42 @@
 
         if (!_form.IsValid)
             return;
+
+        if (_portraitImage != null)
+        {
+            Console.WriteLine($"Upload started for file: {_portraitImage.Name}");
+
+            var uploadsFolder = Path.Combine(
+            Environment.WebRootPath,
+            "uploads");
+
+            Directory.CreateDirectory(uploadsFolder);
+
+            var fileName =
+            $"{Guid.NewGuid()}{Path.GetExtension(_portraitImage.Name)}";
+
+            var filePath = Path.Combine(uploadsFolder, fileName);
+
+            await using var stream =
+            new FileStream(filePath, FileMode.Create);
+
+            try
+            {
+                await _portraitImage.OpenReadStream(5 * 1024 * 1024)
+                .CopyToAsync(stream);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                Snackbar.Add($"Virhe: {ex.Message}", Severity.Error);
+                throw;
+            }
+
+            Console.WriteLine($"WebRootPath: {Environment.WebRootPath}");
+            Console.WriteLine($"ContentRootPath: {Environment.ContentRootPath}");
+
+            model.Portrait = $"/uploads/{fileName}";
+        }
 
         if (_selectedDepartmentId != null)
         {

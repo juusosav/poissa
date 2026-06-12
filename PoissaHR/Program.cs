@@ -1,19 +1,34 @@
-using PoissaHR.Components;
-using PoissaHR.Infrastructure.Data;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.EntityFrameworkCore;
 using MudBlazor.Services;
-using PoissaHR.Infrastructure.Data.Seeds;
-using PoissaHR.Application.Services.EmployeeService;
-using PoissaHR.Application.Services.DepartmentService;
 using PoissaHR.Application.Services.AbsenceService;
-using PoissaHR.Application.Services.EmploymentService;
 using PoissaHR.Application.Services.DashboardService;
+using PoissaHR.Application.Services.DepartmentService;
+using PoissaHR.Application.Services.EmployeeService;
+using PoissaHR.Application.Services.EmploymentService;
+using PoissaHR.Components;
+using PoissaHR.Infrastructure.Data;
+using PoissaHR.Infrastructure.Data.Seeds;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
-    .AddInteractiveServerComponents();
+    .AddInteractiveServerComponents(options =>
+    {
+        options.DetailedErrors = true;
+    });
+
+builder.Services.AddServerSideBlazor()
+    .AddHubOptions(options =>
+    {
+        options.MaximumReceiveMessageSize = 10 * 1024 * 1024;
+    });
+
+builder.Services.Configure<KestrelServerOptions>(options =>
+{
+    options.Limits.MaxRequestBodySize = 10 * 1024 * 1024;
+});
 
 var projectRoot = builder.Environment.ContentRootPath;
 var dbPath = Path.Combine(projectRoot, "poissahr.db");
@@ -38,6 +53,19 @@ builder.Services.AddMudBlazorSnackbar(config =>
 });
 
 var app = builder.Build();
+
+app.Use(async (context, next) =>
+{
+    try
+    {
+        await next();
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"UNHANDLED: {ex}");
+        throw;
+    }
+});
 
 using (var scope = app.Services.CreateScope())
 {
