@@ -1,9 +1,11 @@
 ﻿@using PoissaHR.Application.Services.DepartmentService
 @using PoissaHR.Application.Services.EmployeeService
+@using PoissaHR.Helpers
 @using PoissaHR.Shared.Dto
 
 @inject IEmployeeService EmployeeService
 @inject IDepartmentService DepartmentService
+@inject IFileService FileService
 @inject ISnackbar Snackbar
 @inject NavigationManager Navigation
 
@@ -117,38 +119,7 @@
 
         if (_portraitImage != null)
         {
-            Console.WriteLine($"Upload started for file: {_portraitImage.Name}");
-
-            var uploadsFolder = Path.Combine(
-            Environment.WebRootPath,
-            "uploads");
-
-            Directory.CreateDirectory(uploadsFolder);
-
-            var fileName =
-            $"{Guid.NewGuid()}{Path.GetExtension(_portraitImage.Name)}";
-
-            var filePath = Path.Combine(uploadsFolder, fileName);
-
-            await using var stream =
-            new FileStream(filePath, FileMode.Create);
-
-            try
-            {
-                await _portraitImage.OpenReadStream(5 * 1024 * 1024)
-                .CopyToAsync(stream);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex);
-                Snackbar.Add($"Virhe: {ex.Message}", Severity.Error);
-                throw;
-            }
-
-            Console.WriteLine($"WebRootPath: {Environment.WebRootPath}");
-            Console.WriteLine($"ContentRootPath: {Environment.ContentRootPath}");
-
-            model.Portrait = $"/uploads/{fileName}";
+            model.Portrait = await FileService.SaveFileAsync(_portraitImage);
         }
 
         if (_selectedDepartmentId != null)
@@ -156,15 +127,7 @@
             model.DepartmentId = _selectedDepartmentId.Value;
         }
 
-        try
-        {
-            var created = await EmployeeService.CreateEmployeeAsync(model);
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex);
-            throw;
-        }
+        var created = await EmployeeService.CreateEmployeeAsync(model);
 
         Snackbar.Add("Työntekijän lisätty onnistuneesti", Severity.Success);
 
