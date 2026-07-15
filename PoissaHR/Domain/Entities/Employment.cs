@@ -15,7 +15,7 @@ namespace PoissaHR.Domain.Entities
         public string JobTitle { get; set; } = "";
         public EmploymentType Type { get; set; }
         public EmploymentStatus Status { get; set; }
-        public DateTime StartDate { get; set; }
+        public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
         public ICollection<Absence> Absences { get; set; } = [];
     }

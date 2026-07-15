@@ -74,12 +74,7 @@ namespace PoissaHR.Application.Services.EmploymentService
             Console.WriteLine(dto.EmployeeId);
 
             var employee = await context.Employees
-                .FirstOrDefaultAsync(e => e.Id == dto.EmployeeId);
-
-            if (employee == null)
-            {
-                throw new InvalidOperationException("Employee not found.");
-            }
+                .FirstOrDefaultAsync(e => e.Id == dto.EmployeeId) ?? throw new InvalidOperationException("Employee not found.");
 
             var employment = new Employment
             {
