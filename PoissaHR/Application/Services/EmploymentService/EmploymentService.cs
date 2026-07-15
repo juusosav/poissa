@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using PoissaHR.Shared.Dto;
 using PoissaHR.Domain.Enums;
+using PoissaHR.Domain.Entities;
 
 namespace PoissaHR.Application.Services.EmploymentService
 {
@@ -66,6 +67,38 @@ namespace PoissaHR.Application.Services.EmploymentService
 
             await context.SaveChangesAsync();
             return true;
+        }
+
+        public async Task<EmploymentCreateDto?> CreateEmploymentAsync(EmploymentCreateDto dto)
+        {
+            var employment = new Employment
+            {
+                Id = Guid.NewGuid(),
+                EmployeeId = dto.EmployeeId,
+                DepartmentId = dto.DepartmentId,
+                CompanyId = dto.CompanyId,
+                JobTitle = dto.JobTitle,
+                Status = dto.Status,
+                Type = dto.Type,
+                StartDate = dto.StartDate,
+                EndDate = dto.EndDate
+            };
+            context.Employments.Add(employment);
+
+            await context.SaveChangesAsync();
+
+            return new EmploymentCreateDto
+            {
+                Id = employment.Id,
+                EmployeeId = employment.EmployeeId,
+                DepartmentId = employment.DepartmentId,
+                CompanyId = employment.CompanyId,
+                JobTitle = employment.JobTitle,
+                Status = employment.Status,
+                Type = employment.Type,
+                StartDate = employment.StartDate,
+                EndDate = employment.EndDate
+            };
         }
     }
 }

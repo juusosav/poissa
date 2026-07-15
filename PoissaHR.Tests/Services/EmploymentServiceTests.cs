@@ -125,5 +125,58 @@ namespace PoissaHR.Tests.Services
             Assert.Equal(employee.Id, employment.EmployeeId);
             Assert.Equal(department.Id, employment.DepartmentId);
         }
+
+        [Fact]
+        public async Task CreateEmploymentAsync_ReturnsCreatedEmployment_WhenDtoIsValid()
+        {
+            // Arrange
+            var company = new Company
+            {
+                Id = Guid.NewGuid(),
+                Name = "Test Company"
+            };
+            var department = new Department
+            {
+                Id = Guid.NewGuid(),
+                Name = "IT",
+                CompanyId = company.Id
+            };
+            var employee = new Employee
+            {
+                Id = Guid.NewGuid(),
+                FirstName = "John",
+                LastName = "Doe",
+                Email = "john.doe@email.fi",
+                Phone = "1234567890"
+            };
+
+            var dto = new EmploymentCreateDto
+            {
+                Id = Guid.NewGuid(),
+                EmployeeId = employee.Id,
+                DepartmentId = department.Id,
+                CompanyId = company.Id,
+                JobTitle = "Software Engineer",
+                Status = EmploymentStatus.Aktiivinen,
+                Type = EmploymentType.OsaAikainen,
+                StartDate = DateTime.UtcNow.AddMonths(-6),
+                EndDate = null
+            };
+
+            _context.Companies.Add(company);
+            _context.Departments.Add(department);
+            _context.Employees.Add(employee);
+
+            await _context.SaveChangesAsync(TestContext.Current.CancellationToken);
+
+            // Act
+            var result = await _sut.CreateEmploymentAsync(dto);
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(dto.EmployeeId, result.EmployeeId);
+            Assert.Equal(dto.DepartmentId, result.DepartmentId);
+            Assert.Equal(dto.CompanyId, result.CompanyId);
+        }
     }
 }
