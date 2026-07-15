@@ -131,7 +131,7 @@
 
         Snackbar.Add("Työntekijän lisätty onnistuneesti", Severity.Success);
 
-        Navigation.NavigateTo("/employees");
+        Navigation.NavigateTo($"/employees/{created.Id}");
     }
 
     private void Cancel() => Navigation.NavigateTo($"/employees");

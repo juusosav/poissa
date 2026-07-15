@@ -1,0 +1,133 @@
+﻿@using PoissaHR.Application.Services.EmploymentService
+@using PoissaHR.Application.Services.DepartmentService
+@using PoissaHR.Shared.Dto
+@using PoissaHR.Domain.Enums
+@using PoissaHR.Shared.Extensions
+
+@inject IEmploymentService EmploymentService
+@inject IDepartmentService DepartmentService
+@inject NavigationManager Navigation
+@inject ISnackbar Snackbar
+
+@page "/employees/{EmployeeId:guid}/employments/create-employment"
+
+<MudPaper Class="pa-4">
+    <MudText Typo="Typo.h5" GutterBottom="true">
+        Luo uusi työsuhde
+    </MudText>
+
+    <MudForm @ref="_form">
+        <MudGrid>
+            <MudItem xs="12" md="6">
+                <MudTextField Label="Titteli"
+                              @bind-Value="model.JobTitle"
+                              Required="true" />
+            </MudItem>
+            <MudItem xs="12" md="6">
+                <MudSelect Placeholder="Valitse osasto"
+                           T="Guid?"
+                           Label="Osasto"
+                           @bind-Value="_selectedDepartmentId"
+                           Required="true">
+                    @foreach (var dept in departments)
+                    {
+                        <MudSelectItem T="Guid?" Value="@dept.Id">@dept.Name</MudSelectItem>
+                    }
+                </MudSelect>
+            </MudItem>
+            <MudItem xs="12" md="6">
+                <MudSelect T="EmploymentStatus"
+                           Label="Status"
+                           @bind-Value="model.Status"
+                           Required="true">
+                    @foreach (var status in _statuses)
+                    {
+                        <MudSelectItem T="EmploymentStatus" Value="@status">
+                            @status.GetDisplayName()
+                        </MudSelectItem>
+                    }
+                </MudSelect>
+            </MudItem>
+            <MudItem xs="12" md="6">
+                <MudSelect T="EmploymentType"
+                           Label="Tyyppi"
+                           @bind-Value="model.Type"
+                           Required="true">
+                    @foreach (var type in _types)
+                    {
+                        <MudSelectItem Value="@type">
+                            @type.GetDisplayName()
+                        </MudSelectItem>
+                    }
+                </MudSelect>
+            </MudItem>
+            <MudItem xs="12" md="6">
+                <MudDatePicker PickerVariant="PickerVariant.Dialog"
+                               Label="Alkamispäivä"
+                               DateFormat="dd.MM.yyyy">
+                </MudDatePicker>
+            </MudItem>
+        </MudGrid>
+
+    </MudForm>
+    <MudStack Row="true" Spacing="2" Class="mt-4">
+        <MudButton Variant="Variant.Filled"
+                   Color="Color.Primary"
+                   OnClick="HandleValidSubmit">
+            Tallenna työsuhde
+        </MudButton>
+
+        <MudButton Variant="Variant.Outlined"
+                   OnClick="Cancel">
+            Peruuta
+        </MudButton>
+    </MudStack>
+</MudPaper>
+
+@code {
+    [Parameter]
+    public Guid EmployeeId { get; set; }
+
+    private readonly EmploymentStatus[] _statuses =
+    Enum.GetValues<EmploymentStatus>();
+
+    private readonly EmploymentType[] _types =
+    Enum.GetValues<EmploymentType>();
+
+    private EmploymentCreateDto model = new();
+    MudForm? _form;
+
+    private Guid? _selectedDepartmentId;
+    private List<DepartmentDto> departments = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        departments = (await DepartmentService.GetAllDepartmentsAsync()).ToList();
+    }
+
+    public async Task HandleValidSubmit()
+    {
+        if (_form == null)
+            return;
+
+        await _form.Validate();
+
+        if (!_form.IsValid)
+            return;
+
+        if (_selectedDepartmentId != null)
+        {
+            model.DepartmentId = _selectedDepartmentId.Value;
+        }
+
+        model.EmployeeId = EmployeeId;
+
+        var created = await EmploymentService.CreateEmploymentAsync(model);
+
+        Snackbar.Add("Työsuhde luotu onnistuneesti", Severity.Success);
+
+        Navigation.NavigateTo($"/employees/{created.EmployeeId}");
+    }
+    
+    private void Cancel() => Navigation.NavigateTo($"/employees/{EmployeeId}");
+}

@@ -69,20 +69,31 @@ namespace PoissaHR.Application.Services.EmploymentService
             return true;
         }
 
-        public async Task<EmploymentCreateDto?> CreateEmploymentAsync(EmploymentCreateDto dto)
+        public async Task<EmploymentCreateDto> CreateEmploymentAsync(EmploymentCreateDto dto)
         {
+            Console.WriteLine(dto.EmployeeId);
+
+            var employee = await context.Employees
+                .FirstOrDefaultAsync(e => e.Id == dto.EmployeeId);
+
+            if (employee == null)
+            {
+                throw new InvalidOperationException("Employee not found.");
+            }
+
             var employment = new Employment
             {
                 Id = Guid.NewGuid(),
-                EmployeeId = dto.EmployeeId,
-                DepartmentId = dto.DepartmentId,
-                CompanyId = dto.CompanyId,
+                EmployeeId = employee.Id,
+                DepartmentId = employee.DepartmentId,
+                CompanyId = employee.CompanyId,
                 JobTitle = dto.JobTitle,
                 Status = dto.Status,
                 Type = dto.Type,
                 StartDate = dto.StartDate,
                 EndDate = dto.EndDate
             };
+
             context.Employments.Add(employment);
 
             await context.SaveChangesAsync();

@@ -40,13 +40,23 @@ else
             <MudPaper Class="pa-5 d-flex flex-column" Style="min-height: 17rem;">
                 <MudText Typo="Typo.h6">Nykyinen työsuhde</MudText>
                 <br />
-                <MudText>Osasto: @employee.DepartmentName</MudText>
-                <MudText>Rooli: @employee.CurrentJobTitle</MudText>
-                <br />
-                <MudButton Class="mt-auto align-self-start"
-                           OnClick="@(() => Navigation.NavigateTo($"/employees/{employee.Id}/employments"))">
-                    Näytä kaikki
-                </MudButton>
+                @if (employee.CurrentJobTitle != null)
+                {
+                    <MudText>Osasto: @employee.DepartmentName</MudText>
+                    <MudText>Rooli: @employee.CurrentJobTitle</MudText>
+                    <br />
+                    <MudButton Class="mt-auto align-self-start"
+                               OnClick="@(() => Navigation.NavigateTo($"/employees/{employee.Id}/employments"))">
+                        Näytä kaikki
+                    </MudButton>
+                }
+                else
+                {
+                    <MudButton Class="mt-auto align-self-start"
+                               OnClick="@(() => Navigation.NavigateTo($"/employees/{employee.Id}/employments/create-employment"))">
+                        Lisää työsuhde +
+                    </MudButton>
+                }
             </MudPaper>
         </MudItem>
 
