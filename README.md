@@ -1,5 +1,7 @@
 # PoissaHR
 
+Work in progress.
+
 PoissaHR is a modern HR management platform built with Blazor Server, MudBlazor, and Entity Framework Core.
 
 The project is designed as a learning-focused application that can later evolve into a scalable SaaS HR platform.
