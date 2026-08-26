@@ -10,6 +10,7 @@
         public string Phone { get; set; } = "";
         public ICollection<Employment> Employments { get; set; } = [];
         public ICollection<Absence> ApprovedAbsences { get; set; } = [];
+        public ICollection<EmployeeDocument> Documents { get; set; } = [];
         public Guid CompanyId { get; set; }
         public Company Company { get; set; } = default!;
         public Guid DepartmentId { get; set; }
