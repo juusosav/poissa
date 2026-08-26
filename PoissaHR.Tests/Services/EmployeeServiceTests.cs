@@ -3,13 +3,6 @@ using PoissaHR.Domain.Entities;
 using PoissaHR.Infrastructure.Data;
 using PoissaHR.Shared.Dto;
 using PoissaHR.Tests.Data;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace PoissaHR.Tests.Services
 {

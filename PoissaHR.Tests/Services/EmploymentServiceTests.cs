@@ -4,12 +4,6 @@ using PoissaHR.Tests.Data;
 using PoissaHR.Domain.Entities;
 using PoissaHR.Domain.Enums;
 using PoissaHR.Infrastructure.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using NuGet.Frameworks;
 
 namespace PoissaHR.Tests.Services
 {

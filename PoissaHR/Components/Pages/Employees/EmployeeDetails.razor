@@ -1,6 +1,8 @@
 ﻿@using PoissaHR.Application.Services.EmployeeService
 @using PoissaHR.Shared.Dto
+@using PoissaHR.Helpers
 
+@inject IFileService FileService
 @inject IEmployeeService EmployeeService
 @inject NavigationManager Navigation
 
@@ -91,28 +93,50 @@ else
                 </MudTabPanel>
                 <MudTabPanel Text="Dokumentit">
                     <br />
-                    <MudButton Variant="Variant.Filled"
-                               Color="Color.Primary"
-                               StartIcon="@Icons.Material.Filled.CloudUpload">
-                        Lataa tiedosto
-                    </MudButton>
-                </MudTabPanel>
-                <MudTabPanel Text="Historia">
-                    <br />
-                </MudTabPanel>
-            </MudTabs>
-        </MudItem>
+                    <MudFileUpload T="IBrowserFile"
+                                   FilesChanged="OnFileSelected"
+                                   Accept="pdf/doc/docx">
+                        <ActivatorContent>
+                            <MudButton Variant="Variant.Filled"
+                                       Color="Color.Primary"
+                                       StartIcon="@Icons.Material.Filled.CloudUpload">
+                                Lataa dokumentti
+                            </MudButton>
+                        </ActivatorContent>
+                    </MudFileUpload>
+            </MudTabPanel>
+            <MudTabPanel Text="Historia">
+                <br />
+            </MudTabPanel>
+        </MudTabs>
+    </MudItem>
 
-    </MudGrid>
+</MudGrid>
 }
 @code {
     [Parameter]
     public Guid Id { get; set; }
+
+    private IBrowserFile? _documentFile;
 
     private EmployeeDto? employee;
 
     protected override async Task OnInitializedAsync()
     {
         employee = await EmployeeService.GetEmployeeByIdAsync(Id);
+    }
+
+    private async Task OnFileSelected(IBrowserFile file)
+    {
+        _documentFile = file;
+    }
+
+    // TODO: Implement fully to save files to DB
+    private async Task SaveFile()
+    {
+        if (_documentFile != null)
+        {
+            await FileService.SaveFileAsync(_documentFile);
+        }
     }
 }
