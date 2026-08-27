@@ -15,7 +15,7 @@
 
 <MudPaper Class="pa-4">
     <MudText Typo="Typo.h5" GutterBottom="true">
-        Luo uusi dokumentti
+        Luo uusi PDF-dokumentti
     </MudText>
 
     <MudForm @ref="_form">
@@ -34,7 +34,7 @@
                 <MudText>Tiedosto</MudText>
                 <MudFileUpload T="IBrowserFile"
                                FilesChanged="OnFileSelected"
-                               Accept="*">
+                               Accept="pdf">
                     <ActivatorContent>
                         <MudButton Variant="Variant.Filled"
                                    Color="Color.Primary"
@@ -43,7 +43,12 @@
                         </MudButton>
                     </ActivatorContent>
                 </MudFileUpload>
-
+                @if (_documentFile != null)
+                {
+                    <MudText Typo="Typo.body2" Class="mt-1">
+                        Valittu: @_documentFile.Name
+                    </MudText>
+                }
             </MudItem>
             <MudItem xs="12" md="6">
                 <MudTextField Label="Tiedoston nimi"
@@ -90,6 +95,7 @@
     private async Task OnFileSelected(IBrowserFile file)
     {
         _documentFile = file;
+        model.FileName = Path.GetFileNameWithoutExtension(file.Name);
     }
 
     public async Task HandleValidSubmit()
@@ -111,7 +117,10 @@
         if (_documentFile != null)
             model.FilePath = await FileService.SaveFileAsync(_documentFile);
 
-        var created = DocumentService.CreateDocumentAsync(model);
+
+        model.OriginalFileName = _documentFile?.Name ?? model.FileName;
+
+        var created = await DocumentService.CreateDocumentAsync(model);
 
         Snackbar.Add("Dokumentti lisätty onnistuneesti", Severity.Success);
 

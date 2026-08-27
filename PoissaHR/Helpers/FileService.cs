@@ -5,12 +5,13 @@ namespace PoissaHR.Helpers
 {
     public class FileService(IWebHostEnvironment environment) : IFileService
     {
+        const long MaxFileSize = 5 * 1024 * 1024;
+
         public async Task<string> SaveFileAsync(IBrowserFile file)
         {
-            const long MaxFileSize = 5 * 1024 * 1024;
 
             var uploadsFolder = Path.Combine(
-                environment.WebRootPath,
+                environment.ContentRootPath, 
                 "uploads");
 
             Directory.CreateDirectory(uploadsFolder);
@@ -27,7 +28,8 @@ namespace PoissaHR.Helpers
                 .OpenReadStream(MaxFileSize)
                 .CopyToAsync(stream);
 
-            return $"/uploads/{fileName}";
+            return fileName;
+
         }
     }
 }

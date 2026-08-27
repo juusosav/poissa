@@ -110,7 +110,12 @@ else
                             <MudTd>@document.DocumentType</MudTd>
                             <MudTd>@document.ContentType</MudTd>
                             <MudTd>@document.FileName</MudTd>
+                            <MudTd>
+                                <MudIconButton Icon="@Icons.Material.Filled.Visibility"
+                                               OnClick="@(() => NavigateToDocument(document.Id))" />
+                            </MudTd>
                         </RowTemplate>
+
                     </MudTable>
                     <br />
                     <MudButton OnClick="NavigateToDocumentCreation"
@@ -132,6 +137,9 @@ else
     [Parameter]
     public Guid Id { get; set; }
 
+    [Parameter]
+    public Guid DocumentId { get; set; }
+
     private EmployeeDto? employee;
 
     protected override async Task OnInitializedAsync()
@@ -140,4 +148,6 @@ else
     }
 
     private void NavigateToDocumentCreation() => Navigation.NavigateTo($"/employees/{Id}/create-document");
+
+    private void NavigateToDocument(Guid documentId) => Navigation.NavigateTo($"/employees/{Id}/documents/{documentId}/preview");
 }

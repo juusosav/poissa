@@ -28,6 +28,22 @@ namespace PoissaHR.Application.Services.EmployeeDocumentService
             return employeeDocuments;
         }
 
+        public async Task<EmployeeDocumentDto?> GetDocumentById(Guid id)
+        {
+            var document = await context.EmployeeDocument
+                .Where(e => e.Id == id)
+                .Select(e => new EmployeeDocumentDto
+                {
+                    Id = e.Id,
+                    EmployeeId = e.EmployeeId,
+                    FilePath = e.FilePath,
+                })
+                .AsNoTracking()
+                .FirstOrDefaultAsync();
+
+            return document;
+        }
+
         public async Task<EmployeeDocumentDto> CreateDocumentAsync(EmployeeDocumentDto employeeDocumentDto)
         {
             var document = new EmployeeDocument

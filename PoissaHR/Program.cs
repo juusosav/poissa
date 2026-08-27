@@ -57,6 +57,40 @@ builder.Services.AddMudBlazorSnackbar(config =>
 
 var app = builder.Build();
 
+app.MapGet("/uploads/{id:guid}/preview", async (
+        Guid id,
+        IEmployeeDocumentService documentService,
+        IWebHostEnvironment env) =>
+{
+    var document = await documentService.GetDocumentById(id);
+
+    if (document is null)
+        return Results.NotFound();
+
+    var filePath = Path.Combine(env.ContentRootPath, "uploads", document.FilePath);
+    if (!File.Exists(filePath))
+        return Results.NotFound();
+
+    return Results.File(filePath, document.ContentType);
+});
+
+app.MapGet("/uploads/{id:guid}/download", async (
+    Guid id,
+    IEmployeeDocumentService documentService,
+    IWebHostEnvironment env) =>
+{
+    var document = await documentService.GetDocumentById(id);
+    if (document is null)
+        return Results.NotFound();
+
+    var filePath = Path.Combine(env.ContentRootPath, "uploads", document.FilePath);
+    if (!File.Exists(filePath))
+        return Results.NotFound();
+
+    return Results.File(filePath, document.ContentType, fileDownloadName: document.OriginalFileName);
+
+});
+
 app.Use(async (context, next) =>
 {
     try

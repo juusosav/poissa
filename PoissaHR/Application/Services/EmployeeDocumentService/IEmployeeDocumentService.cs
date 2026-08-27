@@ -5,6 +5,8 @@ namespace PoissaHR.Application.Services.EmployeeDocumentService
     public interface IEmployeeDocumentService
     {
         Task<IEnumerable<EmployeeDocumentDto>> GetAllDocumentsByEmployeeAsync(Guid employeeId);
+        Task<EmployeeDocumentDto?> GetDocumentById(Guid id);
         Task<EmployeeDocumentDto> CreateDocumentAsync(EmployeeDocumentDto employeeDocumentDto);
+
     }
 }

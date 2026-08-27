@@ -1,0 +1,53 @@
+﻿@using PoissaHR.Application.Services.EmployeeDocumentService
+@using PoissaHR.Application.Services.EmployeeService
+@using PoissaHR.Helpers
+@using PoissaHR.Shared.Dto
+
+@inject IEmployeeDocumentService DocumentService
+@inject IEmployeeService EmployeeService
+@inject IFileService FileService
+@inject ISnackbar Snackbar
+@inject NavigationManager Navigation
+
+@page "/employees/{employeeId:guid}/documents/{documentId:guid}/preview"
+
+@if (document == null)
+{
+    <MudText>
+        Tiedostoa ei löytynyt
+        <MudButton OnClick="ReturnToEmployee">
+            Palaa takaisin
+        </MudButton>
+    </MudText>
+}
+else
+{
+    <MudPaper Class="pa-4">
+        <iframe src="@($"/uploads/{document.Id}/preview")"
+                style="width: 100%; height: 80vh; border:none;">
+        </iframe>
+        <br />
+        <MudButton Href="@($"/uploads/{document.Id}/download")"
+                   Variant="Variant.Filled"
+                   Color="Color.Primary">
+            Lataa tietokoneelle
+        </MudButton>
+    </MudPaper>
+}
+
+@code {
+    [Parameter]
+    public Guid DocumentId { get; set; }
+
+    [Parameter]
+    public Guid EmployeeId { get; set; }
+
+    private EmployeeDocumentDto? document;
+
+    protected override async Task OnInitializedAsync()
+    {
+        document = await DocumentService.GetDocumentById(DocumentId);
+    }
+
+    private void ReturnToEmployee() => Navigation.NavigateTo($"/employees/{EmployeeId}");
+}
