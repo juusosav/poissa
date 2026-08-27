@@ -10,15 +10,13 @@ using PoissaHR.Helpers;
 using PoissaHR.Components;
 using PoissaHR.Infrastructure.Data;
 using PoissaHR.Infrastructure.Data.Seeds;
+using PoissaHR.Application.Services.EmployeeDocumentService;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
-    .AddInteractiveServerComponents(options =>
-    {
-        options.DetailedErrors = true;
-    });
+    .AddInteractiveServerComponents();
 
 builder.Services.AddServerSideBlazor()
     .AddHubOptions(options =>
@@ -45,6 +43,7 @@ builder.Services.AddScoped<IAbsenceService, AbsenceService>();
 builder.Services.AddScoped<IDepartmentService, DepartmentService>();
 builder.Services.AddScoped<IEmploymentService, EmploymentService>();
 builder.Services.AddScoped<IDashboardService, DashboardService>();
+builder.Services.AddScoped<IEmployeeDocumentService, EmployeeDocumentService>();
 
 // Helpers
 builder.Services.AddScoped<IFileService, FileService>();

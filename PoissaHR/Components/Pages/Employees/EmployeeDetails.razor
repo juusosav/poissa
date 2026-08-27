@@ -1,9 +1,11 @@
 ﻿@using PoissaHR.Application.Services.EmployeeService
+@using PoissaHR.Application.Services.EmployeeDocumentService
 @using PoissaHR.Shared.Dto
 @using PoissaHR.Helpers
 
 @inject IFileService FileService
 @inject IEmployeeService EmployeeService
+@inject IEmployeeDocumentService DocumentService
 @inject NavigationManager Navigation
 
 @page "/employees/{Id:guid}"
@@ -92,32 +94,43 @@ else
                     </MudTable>
                 </MudTabPanel>
                 <MudTabPanel Text="Dokumentit">
-                    <br />
-                    <MudFileUpload T="IBrowserFile"
-                                   FilesChanged="OnFileSelected"
-                                   Accept="pdf/doc/docx">
-                        <ActivatorContent>
-                            <MudButton Variant="Variant.Filled"
-                                       Color="Color.Primary"
-                                       StartIcon="@Icons.Material.Filled.CloudUpload">
-                                Lataa dokumentti
-                            </MudButton>
-                        </ActivatorContent>
-                    </MudFileUpload>
-            </MudTabPanel>
-            <MudTabPanel Text="Historia">
-                <br />
-            </MudTabPanel>
-        </MudTabs>
-    </MudItem>
+                    <MudTable Items="@employee.Documents"
+                              Hover="true"
+                              Bordered="true"
+                              Striped="true"
+                              Breakpoint="Breakpoint.None">
 
-</MudGrid>
+                        <HeaderContent>
+                            <MudTh>Asiakirjan tyyppi</MudTh>
+                            <MudTh>Sisällön tyyppi</MudTh>
+                            <MudTh>Tiedostonimi</MudTh>
+                        </HeaderContent>
+
+                        <RowTemplate Context="document">
+                            <MudTd>@document.DocumentType</MudTd>
+                            <MudTd>@document.ContentType</MudTd>
+                            <MudTd>@document.FileName</MudTd>
+                        </RowTemplate>
+                    </MudTable>
+                    <br />
+                    <MudButton OnClick="NavigateToDocumentCreation"
+                               Variant="Variant.Filled"
+                               Color="Color.Primary"
+                               StartIcon="@Icons.Material.Filled.PostAdd">
+                        Lataa uusi dokumentti
+                    </MudButton>
+                </MudTabPanel>
+                <MudTabPanel Text="Historia">
+                    <br />
+                </MudTabPanel>
+            </MudTabs>
+        </MudItem>
+
+    </MudGrid>
 }
 @code {
     [Parameter]
     public Guid Id { get; set; }
-
-    private IBrowserFile? _documentFile;
 
     private EmployeeDto? employee;
 
@@ -126,17 +139,5 @@ else
         employee = await EmployeeService.GetEmployeeByIdAsync(Id);
     }
 
-    private async Task OnFileSelected(IBrowserFile file)
-    {
-        _documentFile = file;
-    }
-
-    // TODO: Implement fully to save files to DB
-    /*private async Task SaveFile()
-    {
-        if (_documentFile != null)
-        {
-            await FileService.SaveFileAsync(_documentFile);
-        }
-    }*/
+    private void NavigateToDocumentCreation() => Navigation.NavigateTo($"/employees/{Id}/create-document");
 }

@@ -1,0 +1,122 @@
+﻿@using PoissaHR.Application.Services.EmployeeDocumentService
+@using PoissaHR.Application.Services.EmployeeService
+@using PoissaHR.Helpers
+@using PoissaHR.Shared.Dto
+
+@inject IEmployeeDocumentService DocumentService
+@inject IEmployeeService EmployeeService
+@inject IFileService FileService
+@inject ISnackbar Snackbar
+@inject NavigationManager Navigation
+
+@rendermode InteractiveServer
+
+@page "/employees/{EmployeeId:guid}/create-document"
+
+<MudPaper Class="pa-4">
+    <MudText Typo="Typo.h5" GutterBottom="true">
+        Luo uusi dokumentti
+    </MudText>
+
+    <MudForm @ref="_form">
+        <MudGrid>
+            <MudItem xs="12" md="6">
+                <MudTextField Label="Asiakirjan tyyppi"
+                              @bind-Value="model.DocumentType"
+                              Required="true" />
+            </MudItem>
+            <MudItem xs="12" md="6">
+                <MudTextField Label="Sisällön tyyppi"
+                              @bind-Value="model.ContentType"
+                              Required="true" />
+            </MudItem>
+            <MudItem xs="12" md="6">
+                <MudText>Tiedosto</MudText>
+                <MudFileUpload T="IBrowserFile"
+                               FilesChanged="OnFileSelected"
+                               Accept="*">
+                    <ActivatorContent>
+                        <MudButton Variant="Variant.Filled"
+                                   Color="Color.Primary"
+                                   StartIcon="@Icons.Material.Filled.CloudUpload">
+                            Lataa tiedosto
+                        </MudButton>
+                    </ActivatorContent>
+                </MudFileUpload>
+
+            </MudItem>
+            <MudItem xs="12" md="6">
+                <MudTextField Label="Tiedoston nimi"
+                              @bind-Value="model.FileName"
+                              Required="true" />
+            </MudItem>
+        </MudGrid>
+
+        <MudStack Row="true" Spacing="2" Class="mt-4">
+            <MudButton Variant="Variant.Filled"
+                       Color="Color.Primary"
+                       OnClick="HandleValidSubmit">
+                Tallenna uusi dokumentti
+            </MudButton>
+
+            <MudButton Variant="Variant.Outlined"
+                       OnClick="Cancel">
+                Peruuta
+            </MudButton>
+        </MudStack>
+    </MudForm>
+</MudPaper>
+
+@code {
+    [Parameter]
+    public Guid EmployeeId { get; set; }
+
+    private EmployeeDocumentDto model = new();
+    private MudForm? _form;
+
+    private IBrowserFile? _documentFile;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var employee = await EmployeeService.GetEmployeeByIdAsync(EmployeeId);
+
+        if (employee == null)
+        {
+            Navigation.NavigateTo("/employees");
+            return;
+        }
+    }
+
+    private async Task OnFileSelected(IBrowserFile file)
+    {
+        _documentFile = file;
+    }
+
+    public async Task HandleValidSubmit()
+    {
+        if (_form == null)
+            return;
+
+        await _form.Validate();
+
+        if (!_form.IsValid)
+        {
+            Snackbar.Add("Kaikkia kohtia ei täytetty", Severity.Error);
+            return;
+        }
+
+        model.EmployeeId = EmployeeId;
+        model.UploadedAt = DateTime.UtcNow.Date;
+
+        if (_documentFile != null)
+            model.FilePath = await FileService.SaveFileAsync(_documentFile);
+
+        var created = DocumentService.CreateDocumentAsync(model);
+
+        Snackbar.Add("Dokumentti lisätty onnistuneesti", Severity.Success);
+
+        Navigation.NavigateTo($"/employees/{EmployeeId}");
+    }
+
+    private void Cancel() => Navigation.NavigateTo($"/employees/{EmployeeId}");
+}

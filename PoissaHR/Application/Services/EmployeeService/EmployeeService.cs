@@ -35,6 +35,7 @@ namespace PoissaHR.Application.Services.EmployeeService
             var employee = await context.Employees
                 .Where(e => e.Id == id && !e.IsDeleted)
                 .Include(e => e.Department)
+                .Include(e => e.Documents)
                 .Include(e => e.Employments)
                     .ThenInclude(emp => emp.Absences)
                 .Select(e => new EmployeeDto
@@ -45,6 +46,19 @@ namespace PoissaHR.Application.Services.EmployeeService
                     Portrait = e.Portrait,
                     Email = e.Email,
                     Phone = e.Phone,
+                    Documents = e.Documents
+                .Select(d => new EmployeeDocumentDto
+                {
+                    Id = d.Id,
+                    EmployeeId = d.EmployeeId,
+                    FileName = d.FileName,
+                    OriginalFileName = d.OriginalFileName,
+                    ContentType = d.ContentType,
+                    FilePath = d.FilePath,
+                    UploadedAt = d.UploadedAt,
+                    DocumentType = d.DocumentType
+                })
+                .ToList(),
                     DepartmentName = e.Department != null
                         ? e.Department.Name
                         : null,

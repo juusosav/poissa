@@ -13,6 +13,7 @@ namespace PoissaHR.Infrastructure.Data
 
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Employment> Employments { get; set; }
+        public DbSet<EmployeeDocument> EmployeeDocument { get; set; }
         public DbSet<Absence> Absences { get; set; }
         public DbSet<Department> Departments { get; set; }
         public DbSet<Company> Companies { get; set; }
@@ -29,6 +30,7 @@ namespace PoissaHR.Infrastructure.Data
             DepartmentEntity.Configure(modelBuilder);
             EmployeeEntity.Configure(modelBuilder);
             EmploymentEntity.Configure(modelBuilder);
+            EmployeeDocumentEntity.Configure(modelBuilder);
         }
     }
 }

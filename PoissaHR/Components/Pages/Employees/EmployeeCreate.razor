@@ -129,7 +129,7 @@
 
         var created = await EmployeeService.CreateEmployeeAsync(model);
 
-        Snackbar.Add("Työntekijän lisätty onnistuneesti", Severity.Success);
+        Snackbar.Add("Työntekijä lisätty onnistuneesti", Severity.Success);
 
         Navigation.NavigateTo($"/employees/{created.Id}");
     }
